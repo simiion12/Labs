@@ -1,0 +1,6 @@
+[submodule "PycharmProjects/pythonProject4/OOP"]
+	path = PycharmProjects/pythonProject4/OOP
+	url = https://github.com/russian17/OOP.git
+[submodule "PycharmProjects/pythonProject4/Labs"]
+	path = PycharmProjects/pythonProject4/Labs
+	url = https://github.com/russian17/Labs.git
