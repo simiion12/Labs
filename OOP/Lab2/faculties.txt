@@ -1,1 +1,0 @@
-{Name: Fac1, Abbreviation: F1, Student1: [gav@gmail.com; ff], Study_Field: Mechanical_Engineering}

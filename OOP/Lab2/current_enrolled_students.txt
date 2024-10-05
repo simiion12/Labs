@@ -1,7 +1,0 @@
-{First name: tudor, Last name: gavriuliuc, Email: tudor@gmail.com, Enrollment date: 2023/2/2, Date of birth: 2023/2/2}
-{First name: gabi, Last name: sash, Email: sah@, Enrollment date: 2023/10/2, Date of birth: 2003/4/4}
-{First name: Sahok, Last name: Lucik, Email: lucik@gmail.com, Enrollment date: 2023/10/3, Date of birth: 2003/2/2}
-{First name: yyy, Last name: yyy, Email: q@, Enrollment date: 2023/2/2, Date of birth: 2023/2/2}
-{First name: Tudor, Last name: Gavriliuc, Email: gav@gmail.com, Enrollment date: 2023/2/2, Date of birth: 2023/2/2}
-{First name: Fff, Last name: ff, Email: ff@, Enrollment date: 2022/2/2, Date of birth: 2022/2/2}
-{First name: F1, Last name: ff, Email: ff, Enrollment date: 2022/2/2, Date of birth: 2022/2/2}
