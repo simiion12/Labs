@@ -1,6 +1,7 @@
 from parser import CarScraper
 from web_utils import get_car_objects_from_data, save_json, save_xml, read_json, read_xml
-from data_processing import change_to_mdl_currency
+from web_utils import change_to_mdl_currency, save_statistics
+from statistics import Statistics
 
 
 def main():
@@ -18,6 +19,10 @@ def main():
     filename_json, filename_xml = 'cars.json', 'cars.xml'
     save_json(car_objects, filename=filename_json)
     save_xml(car_objects, filename=filename_xml)
+
+    cars = read_json(filename_json)
+    statistics = Statistics(cars).get_statistics()
+    save_statistics(statistics, 'statistics.json')
 
 
 if __name__ == "__main__":

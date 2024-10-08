@@ -70,12 +70,43 @@ def save_xml(cars, filename):
         f.write(xml_output)
 
 
+def parse_json_string(json_string):
+    # Remove surrounding braces and whitespace
+    json_string = json_string.strip()[1:-1].strip()
+
+    # Split the string into key-value pairs using a more robust method
+    items = json_string.split(',')
+
+    parsed_dict = {}
+    for item in items:
+        # Split only at the first colon to handle values with colons
+        if ':' in item:
+            key, value = item.split(':', 1)  # Split on the first colon only
+        else:
+            continue  # If no colon, skip this item
+
+        key = key.strip().replace('"', '')  # Clean up key
+        value = value.strip().replace('"', '')  # Clean up value
+
+        # Convert numeric strings to integers or floats
+        if value.isdigit():  # Check if the value is a digit
+            value = int(value)
+        elif value.replace('.', '', 1).isdigit():  # Check if it's a float
+            value = float(value)
+
+        parsed_dict[key] = value
+
+    return parsed_dict
+
+
 def read_json(filename):
     with open(filename, 'r', encoding='utf-8') as f:
         json_content = f.read()
 
-    car_list = Car.from_json(json_content)
+    parsed_json = parse_json_string(json_content)  # Manually parse the JSON string
+    car_list = Car.from_json(parsed_json)
     return car_list
+
 
 
 def read_xml(filename):
@@ -94,3 +125,24 @@ def read_xml(filename):
         cars_list.append(car.to_json())
 
     return cars_list
+
+
+def change_to_mdl_currency(cars):
+    """Change the price of the cars from EUR to MDL using Map."""
+    def update_price(car):
+        updated_car = car.copy()
+        updated_car["price"] = float(car.get("price", 0)) * 20.5
+        return updated_car
+
+    cars_price_mdl = list(map(update_price, cars))
+
+    return cars_price_mdl
+
+
+def save_statistics(statistics, filename):
+    with open(filename, 'w') as file:
+        file.write("{\n")
+        for key, value in statistics.items():
+            formatted_value = f'"{value}"' if isinstance(value, str) else value
+            file.write(f'    "{key}": {formatted_value},\n')
+        file.write("}")
