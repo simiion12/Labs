@@ -1,4 +1,121 @@
 <Cars><Car>
+    <Capacit_motor>2.2</Capacit_motor>
+    <Tip_combustibil>Diesel</Tip_combustibil>
+    <Anul_fabricatiei>2017</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>Mercedes</Marca>
+    <Modelul>GLC</Modelul>
+    <Tip_tractiune>4×4</Tip_tractiune>
+    <Distanta_parcursa>144 000</Distanta_parcursa>
+    <Tip_caroserie>Crossover</Tip_caroserie>
+    <Price>569900.0</Price>
+    <Link>https://sargutrans.md/cars/mercedes-glc-2-2-2017/</Link>
+</Car>
+<Car>
+    <Capacit_motor>2.0</Capacit_motor>
+    <Tip_combustibil>Diesel</Tip_combustibil>
+    <Anul_fabricatiei>2019</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>BMW</Marca>
+    <Modelul>X3</Modelul>
+    <Tip_tractiune>4×4</Tip_tractiune>
+    <Distanta_parcursa>140 000 km</Distanta_parcursa>
+    <Tip_caroserie>Crossover</Tip_caroserie>
+    <Price>543250.0</Price>
+    <Link>https://sargutrans.md/cars/bmw-x3-2-0-2019/</Link>
+</Car>
+<Car>
+    <Capacit_motor>2.0</Capacit_motor>
+    <Tip_combustibil>Diesel</Tip_combustibil>
+    <Anul_fabricatiei>2022</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>BMW</Marca>
+    <Modelul>X4</Modelul>
+    <Tip_tractiune>4×4</Tip_tractiune>
+    <Distanta_parcursa>80 000 km</Distanta_parcursa>
+    <Tip_caroserie>Crossover</Tip_caroserie>
+    <Price>981950.0</Price>
+    <Link>https://sargutrans.md/cars/bmw-x4-2-0-2022/</Link>
+</Car>
+<Car>
+    <Capacit_motor>2.0</Capacit_motor>
+    <Tip_combustibil>Diesel</Tip_combustibil>
+    <Anul_fabricatiei>2017</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>Volvo</Marca>
+    <Modelul>S90</Modelul>
+    <Tip_tractiune>Din față</Tip_tractiune>
+    <Distanta_parcursa>168 050 km</Distanta_parcursa>
+    <Tip_caroserie>Sedan</Tip_caroserie>
+    <Price>489950.0</Price>
+    <Link>https://sargutrans.md/cars/volvo-s90-2-0-2017/</Link>
+</Car>
+<Car>
+    <Capacit_motor>1.5</Capacit_motor>
+    <Tip_combustibil>Benzină</Tip_combustibil>
+    <Anul_fabricatiei>2020</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>Mini</Marca>
+    <Modelul>One</Modelul>
+    <Tip_tractiune>Din față</Tip_tractiune>
+    <Distanta_parcursa>27 000 km</Distanta_parcursa>
+    <Tip_caroserie>Hatchback</Tip_caroserie>
+    <Price>379250.0</Price>
+    <Link>https://sargutrans.md/cars/mini-one-1-5-2020/</Link>
+</Car>
+<Car>
+    <Capacit_motor>2.0</Capacit_motor>
+    <Tip_combustibil>Benzină</Tip_combustibil>
+    <Anul_fabricatiei>2022</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>Audi</Marca>
+    <Modelul>Q5</Modelul>
+    <Tip_tractiune>4×4</Tip_tractiune>
+    <Distanta_parcursa>7500 km</Distanta_parcursa>
+    <Tip_caroserie>Crossover</Tip_caroserie>
+    <Price>817950.0</Price>
+    <Link>https://sargutrans.md/cars/audi-q5-2-0-2022/</Link>
+</Car>
+<Car>
+    <Capacit_motor>1.5</Capacit_motor>
+    <Tip_combustibil>Diesel</Tip_combustibil>
+    <Anul_fabricatiei>2015</Anul_fabricatiei>
+    <Cutia_de_viteze>Macanică</Cutia_de_viteze>
+    <Marca>Nissan</Marca>
+    <Modelul>Qashqai</Modelul>
+    <Tip_tractiune>Din față</Tip_tractiune>
+    <Distanta_parcursa>165 000 km</Distanta_parcursa>
+    <Tip_caroserie>Crossover</Tip_caroserie>
+    <Price>282900.0</Price>
+    <Link>https://sargutrans.md/cars/nissan-qashqai-1-5-2015/</Link>
+</Car>
+<Car>
+    <Capacit_motor>1.5</Capacit_motor>
+    <Tip_combustibil>Diesel</Tip_combustibil>
+    <Anul_fabricatiei>2011</Anul_fabricatiei>
+    <Cutia_de_viteze>Macanică</Cutia_de_viteze>
+    <Marca>Renault</Marca>
+    <Modelul>Megane</Modelul>
+    <Tip_tractiune>Din față</Tip_tractiune>
+    <Distanta_parcursa>220 000 km</Distanta_parcursa>
+    <Tip_caroserie>Hatchback</Tip_caroserie>
+    <Price>131200.0</Price>
+    <Link>https://sargutrans.md/cars/renault-megane-1-5-2011/</Link>
+</Car>
+<Car>
+    <Capacit_motor>2.0</Capacit_motor>
+    <Tip_combustibil>Diesel</Tip_combustibil>
+    <Anul_fabricatiei>2019</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>Skoda</Marca>
+    <Modelul>Superb</Modelul>
+    <Tip_tractiune>4×4</Tip_tractiune>
+    <Distanta_parcursa>125 000</Distanta_parcursa>
+    <Tip_caroserie>Sedan</Tip_caroserie>
+    <Price>653950.0</Price>
+    <Link>https://sargutrans.md/cars/skoda-superb-2-0-2019-3/</Link>
+</Car>
+<Car>
     <Capacit_motor>1.5</Capacit_motor>
     <Tip_combustibil>Diesel</Tip_combustibil>
     <Anul_fabricatiei>2017</Anul_fabricatiei>
@@ -8,7 +125,7 @@
     <Tip_tractiune>Din față</Tip_tractiune>
     <Distanta_parcursa>180 000 km</Distanta_parcursa>
     <Tip_caroserie>Crossover</Tip_caroserie>
-    <Price>11900</Price>
+    <Price>243950.0</Price>
     <Link>https://sargutrans.md/cars/renault-kadjar-1-5-2017/</Link>
 </Car>
 <Car>
@@ -21,151 +138,8 @@
     <Tip_tractiune>Din față</Tip_tractiune>
     <Distanta_parcursa>152 000 km</Distanta_parcursa>
     <Tip_caroserie>Hatchback</Tip_caroserie>
-    <Price>21800</Price>
+    <Price>446900.0</Price>
     <Link>https://sargutrans.md/cars/skoda-superb-2-0-2017/</Link>
-</Car>
-<Car>
-    <Capacit_motor>0</Capacit_motor>
-    <Tip_combustibil>Electricitate</Tip_combustibil>
-    <Anul_fabricatiei>2022</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Lexus</Marca>
-    <Modelul>UX</Modelul>
-    <Tip_tractiune>Din față</Tip_tractiune>
-    <Distanta_parcursa>5700 KM</Distanta_parcursa>
-    <Tip_caroserie>Crossover</Tip_caroserie>
-    <Price>36800</Price>
-    <Link>https://sargutrans.md/cars/lexus-ux-300e-electric-2022/</Link>
-</Car>
-<Car>
-    <Capacit_motor>0</Capacit_motor>
-    <Tip_combustibil>Electricitate</Tip_combustibil>
-    <Anul_fabricatiei>2019</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Renault</Marca>
-    <Modelul>ZOE</Modelul>
-    <Tip_tractiune>Din față</Tip_tractiune>
-    <Distanta_parcursa>113 000 km</Distanta_parcursa>
-    <Tip_caroserie>Hatchback</Tip_caroserie>
-    <Price>15500</Price>
-    <Link>https://sargutrans.md/cars/renault-zoe-electric-2019/</Link>
-</Car>
-<Car>
-    <Capacit_motor>1.5</Capacit_motor>
-    <Tip_combustibil>Diesel</Tip_combustibil>
-    <Anul_fabricatiei>2023</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Toyota</Marca>
-    <Modelul>Proace City</Modelul>
-    <Tip_tractiune>Din față</Tip_tractiune>
-    <Distanta_parcursa>9 700</Distanta_parcursa>
-    <Tip_caroserie>Minivan</Tip_caroserie>
-    <Price>28900</Price>
-    <Link>https://sargutrans.md/cars/toyota-proace-city-1-5-2023/</Link>
-</Car>
-<Car>
-    <Capacit_motor>3.0</Capacit_motor>
-    <Tip_combustibil>Diesel</Tip_combustibil>
-    <Anul_fabricatiei>2013</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Land Rover</Marca>
-    <Modelul>Range Rover</Modelul>
-    <Tip_tractiune>4×4</Tip_tractiune>
-    <Distanta_parcursa>160 000 km</Distanta_parcursa>
-    <Tip_caroserie>SUV</Tip_caroserie>
-    <Price>32900</Price>
-    <Link>https://sargutrans.md/cars/land-rover-range-rover-3-0-2013/</Link>
-</Car>
-<Car>
-    <Capacit_motor>2.0</Capacit_motor>
-    <Tip_combustibil>Diesel</Tip_combustibil>
-    <Anul_fabricatiei>2019</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Skoda</Marca>
-    <Modelul>Kodiaq</Modelul>
-    <Tip_tractiune>4×4</Tip_tractiune>
-    <Distanta_parcursa>109 000</Distanta_parcursa>
-    <Tip_caroserie>Crossover</Tip_caroserie>
-    <Price>32900</Price>
-    <Link>https://sargutrans.md/cars/skoda-kodiaq-2-0-2019/</Link>
-</Car>
-<Car>
-    <Capacit_motor>2.0</Capacit_motor>
-    <Tip_combustibil>Diesel</Tip_combustibil>
-    <Anul_fabricatiei>2020</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Volkswagen</Marca>
-    <Modelul>Tiguan</Modelul>
-    <Tip_tractiune>4×4</Tip_tractiune>
-    <Distanta_parcursa>150 000 km</Distanta_parcursa>
-    <Tip_caroserie>Crossover</Tip_caroserie>
-    <Price>27900</Price>
-    <Link>https://sargutrans.md/cars/volkswagen-tiguan-2-0-2020/</Link>
-</Car>
-<Car>
-    <Capacit_motor>3.3</Capacit_motor>
-    <Tip_combustibil>Diesel</Tip_combustibil>
-    <Anul_fabricatiei>2022</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Toyota</Marca>
-    <Modelul>Land Cruiser</Modelul>
-    <Tip_tractiune>4×4</Tip_tractiune>
-    <Distanta_parcursa>79 000 km</Distanta_parcursa>
-    <Tip_caroserie>SUV</Tip_caroserie>
-    <Price>73900</Price>
-    <Link>https://sargutrans.md/cars/toyota-land-cruiser-3-3-2022/</Link>
-</Car>
-<Car>
-    <Capacit_motor>1.5</Capacit_motor>
-    <Tip_combustibil>Diesel</Tip_combustibil>
-    <Anul_fabricatiei>2020</Anul_fabricatiei>
-    <Cutia_de_viteze>Macanică</Cutia_de_viteze>
-    <Marca>Renault</Marca>
-    <Modelul>Megane</Modelul>
-    <Tip_tractiune>Din față</Tip_tractiune>
-    <Distanta_parcursa>143 588 km</Distanta_parcursa>
-    <Tip_caroserie>Universal</Tip_caroserie>
-    <Price>13800</Price>
-    <Link>https://sargutrans.md/cars/renault-megane-1-5-2020/</Link>
-</Car>
-<Car>
-    <Capacit_motor>2.0</Capacit_motor>
-    <Tip_combustibil>Benzină</Tip_combustibil>
-    <Anul_fabricatiei>2022</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Audi</Marca>
-    <Modelul>Q5</Modelul>
-    <Tip_tractiune>4×4</Tip_tractiune>
-    <Distanta_parcursa>7500 km</Distanta_parcursa>
-    <Tip_caroserie>Crossover</Tip_caroserie>
-    <Price>39900</Price>
-    <Link>https://sargutrans.md/cars/audi-q5-2-0-2022/</Link>
-</Car>
-<Car>
-    <Capacit_motor>1.6</Capacit_motor>
-    <Tip_combustibil>Benzină</Tip_combustibil>
-    <Anul_fabricatiei>2016</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Hyundai</Marca>
-    <Modelul>Accent</Modelul>
-    <Tip_tractiune>Din față</Tip_tractiune>
-    <Distanta_parcursa>99 000</Distanta_parcursa>
-    <Tip_caroserie>Sedan</Tip_caroserie>
-    <Price>9800</Price>
-    <Link>https://sargutrans.md/cars/hyundai-accent-1-6-2016/</Link>
-</Car>
-<Car>
-    <Capacit_motor>2.2</Capacit_motor>
-    <Tip_combustibil>Diesel</Tip_combustibil>
-    <Anul_fabricatiei>2017</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Mercedes</Marca>
-    <Modelul>GLC</Modelul>
-    <Tip_tractiune>4×4</Tip_tractiune>
-    <Distanta_parcursa>144 000</Distanta_parcursa>
-    <Tip_caroserie>Crossover</Tip_caroserie>
-    <Price>27800</Price>
-    <Link>https://sargutrans.md/cars/mercedes-glc-2-2-2017/</Link>
 </Car>
 <Car>
     <Capacit_motor>2.4</Capacit_motor>
@@ -177,112 +151,8 @@
     <Tip_tractiune>4×4</Tip_tractiune>
     <Distanta_parcursa>180 000 km</Distanta_parcursa>
     <Tip_caroserie>Crossover</Tip_caroserie>
-    <Price>12400</Price>
+    <Price>254200.0</Price>
     <Link>https://sargutrans.md/cars/honda-cr-v-2-4-2014/</Link>
-</Car>
-<Car>
-    <Capacit_motor>2.0</Capacit_motor>
-    <Tip_combustibil>Diesel</Tip_combustibil>
-    <Anul_fabricatiei>2021</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Mercedes</Marca>
-    <Modelul>E-Class</Modelul>
-    <Tip_tractiune>Din spate</Tip_tractiune>
-    <Distanta_parcursa>58 000 km</Distanta_parcursa>
-    <Tip_caroserie>Sedan</Tip_caroserie>
-    <Price>42900</Price>
-    <Link>https://sargutrans.md/cars/mercedes-e-class-2-0-2021-5/</Link>
-</Car>
-<Car>
-    <Capacit_motor>1.5</Capacit_motor>
-    <Tip_combustibil>Diesel</Tip_combustibil>
-    <Anul_fabricatiei>2019</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Opel</Marca>
-    <Modelul>Grandland X</Modelul>
-    <Tip_tractiune>Din față</Tip_tractiune>
-    <Distanta_parcursa>128 000</Distanta_parcursa>
-    <Tip_caroserie>Crossover</Tip_caroserie>
-    <Price>13900</Price>
-    <Link>https://sargutrans.md/cars/opel-grandland-x-1-5-2019/</Link>
-</Car>
-<Car>
-    <Capacit_motor>1.5</Capacit_motor>
-    <Tip_combustibil>Benzină</Tip_combustibil>
-    <Anul_fabricatiei>2020</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Mini</Marca>
-    <Modelul>One</Modelul>
-    <Tip_tractiune>Din față</Tip_tractiune>
-    <Distanta_parcursa>27 000 km</Distanta_parcursa>
-    <Tip_caroserie>Hatchback</Tip_caroserie>
-    <Price>18500</Price>
-    <Link>https://sargutrans.md/cars/mini-one-1-5-2020/</Link>
-</Car>
-<Car>
-    <Capacit_motor>2.0</Capacit_motor>
-    <Tip_combustibil>Diesel</Tip_combustibil>
-    <Anul_fabricatiei>2022</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>BMW</Marca>
-    <Modelul>X4</Modelul>
-    <Tip_tractiune>4×4</Tip_tractiune>
-    <Distanta_parcursa>80 000 km</Distanta_parcursa>
-    <Tip_caroserie>Crossover</Tip_caroserie>
-    <Price>47900</Price>
-    <Link>https://sargutrans.md/cars/bmw-x4-2-0-2022/</Link>
-</Car>
-<Car>
-    <Capacit_motor>3.0</Capacit_motor>
-    <Tip_combustibil>Diesel</Tip_combustibil>
-    <Anul_fabricatiei>2020</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>BMW</Marca>
-    <Modelul>7 Series</Modelul>
-    <Tip_tractiune>4×4</Tip_tractiune>
-    <Distanta_parcursa>138 000 km</Distanta_parcursa>
-    <Tip_caroserie>Sedan</Tip_caroserie>
-    <Price>66900</Price>
-    <Link>https://sargutrans.md/cars/bmw-7-series-3-0-2020/</Link>
-</Car>
-<Car>
-    <Capacit_motor>1.5</Capacit_motor>
-    <Tip_combustibil>Diesel</Tip_combustibil>
-    <Anul_fabricatiei>2011</Anul_fabricatiei>
-    <Cutia_de_viteze>Macanică</Cutia_de_viteze>
-    <Marca>Renault</Marca>
-    <Modelul>Megane</Modelul>
-    <Tip_tractiune>Din față</Tip_tractiune>
-    <Distanta_parcursa>220 000 km</Distanta_parcursa>
-    <Tip_caroserie>Hatchback</Tip_caroserie>
-    <Price>6400</Price>
-    <Link>https://sargutrans.md/cars/renault-megane-1-5-2011/</Link>
-</Car>
-<Car>
-    <Capacit_motor>1.5</Capacit_motor>
-    <Tip_combustibil>Diesel</Tip_combustibil>
-    <Anul_fabricatiei>2017</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Renault</Marca>
-    <Modelul>Talisman</Modelul>
-    <Tip_tractiune>Din față</Tip_tractiune>
-    <Distanta_parcursa>160 200 km</Distanta_parcursa>
-    <Tip_caroserie>Universal</Tip_caroserie>
-    <Price>12800</Price>
-    <Link>https://sargutrans.md/cars/renault-talisman-1-5-2017/</Link>
-</Car>
-<Car>
-    <Capacit_motor>2.0</Capacit_motor>
-    <Tip_combustibil>Diesel</Tip_combustibil>
-    <Anul_fabricatiei>2019</Anul_fabricatiei>
-    <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Skoda</Marca>
-    <Modelul>Superb</Modelul>
-    <Tip_tractiune>4×4</Tip_tractiune>
-    <Distanta_parcursa>125 000</Distanta_parcursa>
-    <Tip_caroserie>Sedan</Tip_caroserie>
-    <Price>31900</Price>
-    <Link>https://sargutrans.md/cars/skoda-superb-2-0-2019-3/</Link>
 </Car>
 <Car>
     <Capacit_motor>2.0</Capacit_motor>
@@ -294,21 +164,125 @@
     <Tip_tractiune>4×4</Tip_tractiune>
     <Distanta_parcursa>149 000 km</Distanta_parcursa>
     <Tip_caroserie>Crossover</Tip_caroserie>
-    <Price>33900</Price>
+    <Price>694950.0</Price>
     <Link>https://sargutrans.md/cars/volvo-xc60-2-0-2022/</Link>
+</Car>
+<Car>
+    <Capacit_motor>1.6</Capacit_motor>
+    <Tip_combustibil>Benzină</Tip_combustibil>
+    <Anul_fabricatiei>2016</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>Hyundai</Marca>
+    <Modelul>Accent</Modelul>
+    <Tip_tractiune>Din față</Tip_tractiune>
+    <Distanta_parcursa>99 000</Distanta_parcursa>
+    <Tip_caroserie>Sedan</Tip_caroserie>
+    <Price>200900.0</Price>
+    <Link>https://sargutrans.md/cars/hyundai-accent-1-6-2016/</Link>
+</Car>
+<Car>
+    <Capacit_motor>3.0</Capacit_motor>
+    <Tip_combustibil>Diesel</Tip_combustibil>
+    <Anul_fabricatiei>2019</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>BMW</Marca>
+    <Modelul>X5</Modelul>
+    <Tip_tractiune>4×4</Tip_tractiune>
+    <Distanta_parcursa>150 500 km</Distanta_parcursa>
+    <Tip_caroserie>Crossover</Tip_caroserie>
+    <Price>1043450.0</Price>
+    <Link>https://sargutrans.md/cars/bmw-x5-3-0-2019-9/</Link>
 </Car>
 <Car>
     <Capacit_motor>1.5</Capacit_motor>
     <Tip_combustibil>Diesel</Tip_combustibil>
-    <Anul_fabricatiei>2015</Anul_fabricatiei>
-    <Cutia_de_viteze>Macanică</Cutia_de_viteze>
-    <Marca>Nissan</Marca>
-    <Modelul>Qashqai</Modelul>
+    <Anul_fabricatiei>2017</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>Renault</Marca>
+    <Modelul>Talisman</Modelul>
     <Tip_tractiune>Din față</Tip_tractiune>
-    <Distanta_parcursa>165 000 km</Distanta_parcursa>
+    <Distanta_parcursa>160 200 km</Distanta_parcursa>
+    <Tip_caroserie>Universal</Tip_caroserie>
+    <Price>262400.0</Price>
+    <Link>https://sargutrans.md/cars/renault-talisman-1-5-2017/</Link>
+</Car>
+<Car>
+    <Capacit_motor>2.0</Capacit_motor>
+    <Tip_combustibil>Diesel</Tip_combustibil>
+    <Anul_fabricatiei>2021</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>Mercedes</Marca>
+    <Modelul>E-Class</Modelul>
+    <Tip_tractiune>Din spate</Tip_tractiune>
+    <Distanta_parcursa>58 000 km</Distanta_parcursa>
+    <Tip_caroserie>Sedan</Tip_caroserie>
+    <Price>879450.0</Price>
+    <Link>https://sargutrans.md/cars/mercedes-e-class-2-0-2021-5/</Link>
+</Car>
+<Car>
+    <Capacit_motor>N/A</Capacit_motor>
+    <Tip_combustibil>Electricitate</Tip_combustibil>
+    <Anul_fabricatiei>2020</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>Mercedes</Marca>
+    <Modelul>EQC</Modelul>
+    <Tip_tractiune>4×4</Tip_tractiune>
+    <Distanta_parcursa>23 000 km</Distanta_parcursa>
     <Tip_caroserie>Crossover</Tip_caroserie>
-    <Price>13800</Price>
-    <Link>https://sargutrans.md/cars/nissan-qashqai-1-5-2015/</Link>
+    <Price>1022950.0</Price>
+    <Link>https://sargutrans.md/cars/mercedes-eqc-2020/</Link>
+</Car>
+<Car>
+    <Capacit_motor>2.0</Capacit_motor>
+    <Tip_combustibil>Diesel</Tip_combustibil>
+    <Anul_fabricatiei>2020</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>Volkswagen</Marca>
+    <Modelul>Tiguan</Modelul>
+    <Tip_tractiune>4×4</Tip_tractiune>
+    <Distanta_parcursa>150 000 km</Distanta_parcursa>
+    <Tip_caroserie>Crossover</Tip_caroserie>
+    <Price>571950.0</Price>
+    <Link>https://sargutrans.md/cars/volkswagen-tiguan-2-0-2020/</Link>
+</Car>
+<Car>
+    <Capacit_motor>3.0</Capacit_motor>
+    <Tip_combustibil>Diesel</Tip_combustibil>
+    <Anul_fabricatiei>2020</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>BMW</Marca>
+    <Modelul>7 Series</Modelul>
+    <Tip_tractiune>4×4</Tip_tractiune>
+    <Distanta_parcursa>138 000 km</Distanta_parcursa>
+    <Tip_caroserie>Sedan</Tip_caroserie>
+    <Price>1371450.0</Price>
+    <Link>https://sargutrans.md/cars/bmw-7-series-3-0-2020/</Link>
+</Car>
+<Car>
+    <Capacit_motor>0</Capacit_motor>
+    <Tip_combustibil>Electricitate</Tip_combustibil>
+    <Anul_fabricatiei>2022</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>Lexus</Marca>
+    <Modelul>UX</Modelul>
+    <Tip_tractiune>Din față</Tip_tractiune>
+    <Distanta_parcursa>5700 KM</Distanta_parcursa>
+    <Tip_caroserie>Crossover</Tip_caroserie>
+    <Price>754400.0</Price>
+    <Link>https://sargutrans.md/cars/lexus-ux-300e-electric-2022/</Link>
+</Car>
+<Car>
+    <Capacit_motor>3.3</Capacit_motor>
+    <Tip_combustibil>Diesel</Tip_combustibil>
+    <Anul_fabricatiei>2022</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>Toyota</Marca>
+    <Modelul>Land Cruiser</Modelul>
+    <Tip_tractiune>4×4</Tip_tractiune>
+    <Distanta_parcursa>79 000 km</Distanta_parcursa>
+    <Tip_caroserie>SUV</Tip_caroserie>
+    <Price>1514950.0</Price>
+    <Link>https://sargutrans.md/cars/toyota-land-cruiser-3-3-2022/</Link>
 </Car>
 <Car>
     <Capacit_motor>2.0</Capacit_motor>
@@ -320,7 +294,7 @@
     <Tip_tractiune>4×4</Tip_tractiune>
     <Distanta_parcursa>90 000 km</Distanta_parcursa>
     <Tip_caroserie>Crossover</Tip_caroserie>
-    <Price>64900</Price>
+    <Price>1330450.0</Price>
     <Link>https://sargutrans.md/cars/mercedes-gle-2-0-2020/</Link>
 </Car>
 <Car>
@@ -333,33 +307,46 @@
     <Tip_tractiune>Din față</Tip_tractiune>
     <Distanta_parcursa>123 000 km</Distanta_parcursa>
     <Tip_caroserie>Sedan</Tip_caroserie>
-    <Price>11500</Price>
+    <Price>235750.0</Price>
     <Link>https://sargutrans.md/cars/toyota-corolla-1-4-2016/</Link>
 </Car>
 <Car>
-    <Capacit_motor>2.0</Capacit_motor>
-    <Tip_combustibil>Diesel</Tip_combustibil>
-    <Anul_fabricatiei>2017</Anul_fabricatiei>
+    <Capacit_motor>0</Capacit_motor>
+    <Tip_combustibil>Electricitate</Tip_combustibil>
+    <Anul_fabricatiei>2019</Anul_fabricatiei>
     <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Volvo</Marca>
-    <Modelul>S90</Modelul>
+    <Marca>Renault</Marca>
+    <Modelul>ZOE</Modelul>
     <Tip_tractiune>Din față</Tip_tractiune>
-    <Distanta_parcursa>168 050 km</Distanta_parcursa>
-    <Tip_caroserie>Sedan</Tip_caroserie>
-    <Price>23900</Price>
-    <Link>https://sargutrans.md/cars/volvo-s90-2-0-2017/</Link>
+    <Distanta_parcursa>113 000 km</Distanta_parcursa>
+    <Tip_caroserie>Hatchback</Tip_caroserie>
+    <Price>317750.0</Price>
+    <Link>https://sargutrans.md/cars/renault-zoe-electric-2019/</Link>
 </Car>
 <Car>
-    <Capacit_motor>N/A</Capacit_motor>
-    <Tip_combustibil>Electricitate</Tip_combustibil>
-    <Anul_fabricatiei>2020</Anul_fabricatiei>
+    <Capacit_motor>1.5</Capacit_motor>
+    <Tip_combustibil>Diesel</Tip_combustibil>
+    <Anul_fabricatiei>2019</Anul_fabricatiei>
     <Cutia_de_viteze>Automată</Cutia_de_viteze>
-    <Marca>Mercedes</Marca>
-    <Modelul>EQC</Modelul>
-    <Tip_tractiune>4×4</Tip_tractiune>
-    <Distanta_parcursa>23 000 km</Distanta_parcursa>
+    <Marca>Opel</Marca>
+    <Modelul>Grandland X</Modelul>
+    <Tip_tractiune>Din față</Tip_tractiune>
+    <Distanta_parcursa>128 000</Distanta_parcursa>
     <Tip_caroserie>Crossover</Tip_caroserie>
-    <Price>49900</Price>
-    <Link>https://sargutrans.md/cars/mercedes-eqc-2020/</Link>
+    <Price>284950.0</Price>
+    <Link>https://sargutrans.md/cars/opel-grandland-x-1-5-2019/</Link>
+</Car>
+<Car>
+    <Capacit_motor>1.5</Capacit_motor>
+    <Tip_combustibil>Diesel</Tip_combustibil>
+    <Anul_fabricatiei>2023</Anul_fabricatiei>
+    <Cutia_de_viteze>Automată</Cutia_de_viteze>
+    <Marca>Toyota</Marca>
+    <Modelul>Proace City</Modelul>
+    <Tip_tractiune>Din față</Tip_tractiune>
+    <Distanta_parcursa>9 700</Distanta_parcursa>
+    <Tip_caroserie>Minivan</Tip_caroserie>
+    <Price>592450.0</Price>
+    <Link>https://sargutrans.md/cars/toyota-proace-city-1-5-2023/</Link>
 </Car>
 </Cars>

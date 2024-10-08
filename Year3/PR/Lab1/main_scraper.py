@@ -1,5 +1,6 @@
 from parser import CarScraper
-from web_utils import get_car_objects_from_data, save_json, save_xml
+from web_utils import get_car_objects_from_data, save_json, save_xml, read_json, read_xml
+from data_processing import change_to_mdl_currency
 
 
 def main():
@@ -11,11 +12,12 @@ def main():
 
     #     final_cars.extend(parse_page(url))
     final_cars = CarScraper("https://sargutrans.md/page/1/").parse_page()
-    car_objects = get_car_objects_from_data(final_cars)
-    save_json(car_objects)
-    save_xml(car_objects)
-    print(final_cars)
-    print(len(final_cars))
+    final_cars_mdl_currency = change_to_mdl_currency(final_cars)
+
+    car_objects = get_car_objects_from_data(final_cars_mdl_currency)
+    filename_json, filename_xml = 'cars.json', 'cars.xml'
+    save_json(car_objects, filename=filename_json)
+    save_xml(car_objects, filename=filename_xml)
 
 
 if __name__ == "__main__":

@@ -58,13 +58,13 @@ def get_car_objects_from_data(data):
                 d.get('price', 0), d.get('link', 'N/A')) for d in data]
 
 
-def save_json(cars):
+def save_json(cars, filename):
     json_output = Car.serialize_list_to_json(cars)
-    with open('cars.json', 'w', encoding='utf-8') as f:
+    with open(filename, 'w', encoding='utf-8') as f:
         f.write(json_output)
 
 
-def save_xml(cars):
+def save_xml(cars, filename):
     xml_output = Car.serialize_list_to_xml(cars)
     with open('cars.xml', 'w', encoding='utf-8') as f:
         f.write(xml_output)
