@@ -2,9 +2,11 @@ import ssl
 import socket
 from urllib.parse import urlparse
 from car import Car
+import json
 
 
 def get_webpage(url, max_redirects=5):
+    """Fetch the webpage content."""
     for _ in range(max_redirects):
         parsed_url = urlparse(url)
         host = parsed_url.netloc
@@ -37,11 +39,13 @@ def get_webpage(url, max_redirects=5):
 
 
 def send_request(sock, host, path):
+    """Send a GET request to the server."""
     request = f"GET {path} HTTP/1.1\r\nHost: {host}\r\nConnection: close\r\n\r\n"
     sock.sendall(request.encode())
 
 
 def receive_response(sock):
+    """Receive the response from the server."""
     response = b""
     while True:
         data = sock.recv(4096)
@@ -52,6 +56,7 @@ def receive_response(sock):
 
 
 def get_car_objects_from_data(data):
+    """Return a list of Car objects from a list of dictionaries."""
     return [Car(d.get('Capacit. motor', 'N/A'), d.get('Tip combustibil', 'N/A'), d.get('Anul fabricației', 'N/A'),
                 d.get('Cutia de viteze', 'N/A'), d.get('Marcă', 'N/A'), d.get('Modelul', 'N/A'),
                 d.get('Tip tractiune', 'N/A'), d.get('Distanță parcursă', 'N/A'), d.get('Tip caroserie', 'N/A'),
@@ -59,57 +64,28 @@ def get_car_objects_from_data(data):
 
 
 def save_json(cars, filename):
+    """Save the cars to a JSON file."""
     json_output = Car.serialize_list_to_json(cars)
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(json_output)
 
 
 def save_xml(cars, filename):
+    """Save the cars to a XML file."""
     xml_output = Car.serialize_list_to_xml(cars)
-    with open('cars.xml', 'w', encoding='utf-8') as f:
+    with open(filename, 'w', encoding='utf-8') as f:
         f.write(xml_output)
 
 
-def parse_json_string(json_string):
-    # Remove surrounding braces and whitespace
-    json_string = json_string.strip()[1:-1].strip()
-
-    # Split the string into key-value pairs using a more robust method
-    items = json_string.split(',')
-
-    parsed_dict = {}
-    for item in items:
-        # Split only at the first colon to handle values with colons
-        if ':' in item:
-            key, value = item.split(':', 1)  # Split on the first colon only
-        else:
-            continue  # If no colon, skip this item
-
-        key = key.strip().replace('"', '')  # Clean up key
-        value = value.strip().replace('"', '')  # Clean up value
-
-        # Convert numeric strings to integers or floats
-        if value.isdigit():  # Check if the value is a digit
-            value = int(value)
-        elif value.replace('.', '', 1).isdigit():  # Check if it's a float
-            value = float(value)
-
-        parsed_dict[key] = value
-
-    return parsed_dict
-
-
 def read_json(filename):
+    """Read the JSON file and return a list of dictionaries."""
     with open(filename, 'r', encoding='utf-8') as f:
-        json_content = f.read()
-
-    parsed_json = parse_json_string(json_content)  # Manually parse the JSON string
-    car_list = Car.from_json(parsed_json)
-    return car_list
-
+        cars = json.load(f)
+    return cars
 
 
 def read_xml(filename):
+    """Read the XML file and return a list of dictionaries."""
     cars_list = []
     with open(filename, 'r', encoding='utf-8') as f:
         xml_content = f.read()
@@ -140,7 +116,8 @@ def change_to_mdl_currency(cars):
 
 
 def save_statistics(statistics, filename):
-    with open(filename, 'w') as file:
+    """Save the statistics to a JSON file."""
+    with open(filename, 'w', encoding='utf-8') as file:
         file.write("{\n")
         for key, value in statistics.items():
             formatted_value = f'"{value}"' if isinstance(value, str) else value
