@@ -1,5 +1,5 @@
 from parser import CarScraper
-from data_processing import get_car_objects_from_data, save_json, save_xml
+from web_utils import get_car_objects_from_data, save_json, save_xml
 
 
 def main():

@@ -50,6 +50,7 @@ class CarScraper:
 
     @staticmethod
     def process_price(amount):
+        """Process price, by removing EU stamp, the dot and spaces"""
         try:
             amount = int(amount.replace('€', '').replace(' ', '').replace('.', ''))
             if amount > 1000:
