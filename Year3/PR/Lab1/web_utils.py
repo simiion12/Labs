@@ -2,7 +2,6 @@ import ssl
 import socket
 from urllib.parse import urlparse
 from car import Car
-import json
 
 
 def get_webpage(url, max_redirects=5):
@@ -80,8 +79,9 @@ def save_xml(cars, filename):
 def read_json(filename):
     """Read the JSON file and return a list of dictionaries."""
     with open(filename, 'r', encoding='utf-8') as f:
-        cars = json.load(f)
-    return cars
+        json_string = f.read()
+
+    return Car.from_json(json_string)
 
 
 def read_xml(filename):

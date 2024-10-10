@@ -6,6 +6,7 @@ class Statistics:
         self.cars = cars
 
     def get_statistics(self):
+        """Return a dictionary with statistics about the cars."""
         if not self.cars:
             return {}
         return {

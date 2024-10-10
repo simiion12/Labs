@@ -15,6 +15,7 @@ class Car:
         self.link = link
 
     def to_json(self):
+        """Method to convert the object to a JSON string"""
         return {
             "Capacit. motor": self.capacit_motor,
             "Tip combustibil": self.tip_combustibil,
@@ -30,6 +31,7 @@ class Car:
         }
 
     def to_xml(self):
+        """Method to convert the object to an XML string"""
         xml_str = (
             f"<Car>\n"
             f"    <Capacit_motor>{self.capacit_motor}</Capacit_motor>\n"
@@ -48,23 +50,71 @@ class Car:
         return xml_str
 
     @classmethod
-    def from_json(cls, json_data):
-        return cls(
-            capacit_motor=json_data.get("Capacit. motor"),
-            tip_combustibil=json_data.get("Tip combustibil"),
-            anul_fabricatiei=json_data.get("Anul fabricației"),
-            cutia_de_viteze=json_data.get("Cutia de viteze"),
-            marca=json_data.get("Marcă"),
-            modelul=json_data.get("Modelul"),
-            tip_tractiune=json_data.get("Tip tractiune"),
-            distanta_parcursa=json_data.get("Distanță parcursă"),
-            tip_caroserie=json_data.get("Tip caroserie"),
-            price=json_data.get("price"),
-            link=json_data.get("link")
-        )
+    def from_json(cls, json_string):
+        """Method to create a Car objects from a JSON string"""
+        json_string = json_string.strip()
+        if not json_string:
+            return []
+
+        # Check if it's a JSON array or a single object
+        if json_string.startswith('['):
+            json_string = json_string[1:-1].strip()
+        elif not json_string.startswith('{'):
+            raise ValueError("Invalid JSON format")
+
+        # Split the string into individual JSON objects
+        json_objects = []
+        bracket_count = 0
+        current_object = ""
+
+        for char in json_string:
+            if char == '{':
+                bracket_count += 1
+            elif char == '}':
+                bracket_count -= 1
+
+            current_object += char
+
+            if bracket_count == 0 and current_object.strip():
+                json_objects.append(current_object.strip())
+                current_object = ""
+
+        # Parse each JSON object
+        parsed_objects = []
+        for json_obj in json_objects:
+            # Remove the outer braces
+            json_obj = json_obj.strip()[1:-1]
+
+            # Split the string into key-value pairs
+            pairs = json_obj.split(',')
+
+            # Create a dictionary to store the parsed data
+            data = {}
+
+            for pair in pairs:
+                if ':' not in pair:
+                    continue  # Skip invalid pairs
+                key, value = pair.split(':', 1)
+                key = key.strip().strip('"')
+                value = value.strip().strip('"')
+
+                # Convert to appropriate types
+                if value.lower() in ('null', 'n/a', ''):
+                    value = 'N/A'
+                elif value.lower() in ('true', 'false'):
+                    value = value.lower() == 'true'
+                elif value.replace('.', '').isdigit():
+                    value = float(value) if '.' in value else int(value)
+
+                data[key] = value
+
+            parsed_objects.append(data)
+
+        return parsed_objects
 
     @classmethod
     def from_xml(cls, xml_str):
+        """Method to create a Car object from an XML string"""
         car_data = {}
         lines = xml_str.strip().split('\n')
         for line in lines[1:-1]:  # Skip first and last lines (opening and closing Car tags)
@@ -89,6 +139,7 @@ class Car:
 
     @staticmethod
     def serialize_list_to_json(cars):
+        """Method to convert a list of Car objects to a JSON string"""
         json_list = []
         for car in cars:
             json_list.append(car.to_json())
@@ -99,6 +150,7 @@ class Car:
 
     @staticmethod
     def serialize_list_to_xml(cars):
+        """Method to convert a list of Car objects to an XML string"""
         xml_list_str = '<Cars>'
         for car in cars:
             xml_list_str += car.to_xml()
