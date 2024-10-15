@@ -10,10 +10,35 @@ This laboratory project focuses on analyzing and decrypting text using frequency
 - Compare frequency distribution with standard English language letter frequencies
 - Visualize letter frequency distributions
 - Write decrypted text to a file
+- Streamlit interface to interact with the decryption process using a web-based UI.
+## Tools
+- `Streamlit App`: Provides a graphical interface for real-time interaction with text decryption and frequency analysis.
+- `Command Line`: Use Python scripts (main.py and streamlit.py) for frequency analysis and letter substitution via the terminal.
 
 ## Files
 - `main.py`: The main script that orchestrates the decryption process
 - `utils.py`: Utility functions for text analysis, file operations, and visualization
+- `streamlit.py`:  Streamlit-based graphical interface for decryption and analysis.
+
+## Streamlit interface
+The Streamlit app provides a user-friendly way to interact with the decryption tools:
+
+- *Load Encrypted Text:* Upload an encrypted text file for analysis.
+- *View Letter Frequency Analysis:* Automatically generate a frequency plot of letters in the ciphertext.
+- *Perform Letter Substitutions:* Enter letter substitutions directly in the app to decrypt the text step-by-step.
+- *Compare with English Frequencies:* Visualize how the letter distribution compares to standard English letter frequencies.
+- *Save Decrypted Text:* After successful decryption, save the result to a file.
+
+## How to Run the Streamlit App
+The Streamlit app provides a user-friendly way to interact with the decryption tools:
+
+- Install the required dependencies (including Streamlit and Matplotlib).
+- Run the Streamlit app by executing the following command:
+```python
+streamlit run streamlit.py
+```
+
+- Use the web interface to upload encrypted text, perform letter substitutions, and visualize results.
 
 ## Usage
 1. Ensure you have the required dependencies installed (matplotlib).
