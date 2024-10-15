@@ -1,4 +1,5 @@
 from functools import reduce
+import datetime
 
 
 class Statistics:
@@ -31,6 +32,7 @@ class Statistics:
             "toyota_cars": self.ratio_cars_by_make("Toyota"),
             "skoda_cars": self.ratio_cars_by_make("Skoda"),
             "tesla_cars": self.ratio_cars_by_make("Tesla"),
+            "datetime": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
 
     def get_total_price(self):
