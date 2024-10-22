@@ -108,7 +108,9 @@ class Car:
 
                 data[key] = value
 
-            parsed_objects.append(data)
+            # If data is not empty, add it to the list
+            if data:
+                parsed_objects.append(data)
 
         return parsed_objects
 
@@ -156,3 +158,71 @@ class Car:
             xml_list_str += car.to_xml()
         xml_list_str += '</Cars>'
         return xml_list_str
+
+    @staticmethod
+    def serialize_car_list(cars):
+        """Serialize a list of Car objects into a custom string format."""
+        if not cars:
+            return "L:[]"
+
+        car_parts = []
+        for car in cars:
+            print(car)
+            car_attrs = [
+                ('Capacit. motor', str(car.capacit_motor)),
+                ('Tip combustibil', str(car.tip_combustibil)),
+                ('Anul fabricației', str(car.anul_fabricatiei)),
+                ('Cutia de viteze', str(car.cutia_de_viteze)),
+                ('Marcă', str(car.marca)),
+                ('Modelul', str(car.modelul)),
+                ('Tip tractiune', str(car.tip_tractiune)),
+                ('Distanță parcursă', str(car.distanta_parcursa)),
+                ('Tip caroserie', str(car.tip_caroserie)),
+                ('price', str(car.price)),
+                ('link', str(car.link))
+            ]
+
+            car_str = 'O:' + ';'.join(f'k:str({k}):v:str({v})' for k, v in car_attrs)
+            car_parts.append(car_str)
+
+        return f"L:[{';'.join(car_parts)}]"
+
+    @staticmethod
+    def deserialize_car_list(serial_str):
+        """Deserialize a string back into a list of dictionaries for get_car_objects_from_data."""
+        if not serial_str.startswith('L:[') or not serial_str.endswith(']'):
+            raise ValueError(f"Invalid format: String must start with 'L:[' and end with ']'. Got: {serial_str}")
+
+        if serial_str == "L:[]":
+            return []
+
+        # Remove the L:[ prefix and ] suffix
+        content = serial_str[3:-1]
+
+        # Process each car object
+        car_dicts = []
+        car_strings = content.split('O:')[1:]  # Skip the first empty split
+
+        for car_str in car_strings:
+            car_dict = {}
+            pairs = car_str.strip(';').split(';')
+
+            for pair in pairs:
+                # Split only on the first two occurrences of ':'
+                parts = pair.split(':', 3)
+                if len(parts) == 4 and parts[0] == 'k' and parts[2] == 'v':
+                    # Extract the actual key and value from the str() wrapper
+                    key = parts[1][4:-1] if parts[1].startswith('str(') else parts[1]
+                    value = parts[3][4:-1] if parts[3].startswith('str(') else parts[3]
+                    car_dict[key] = value
+
+            if car_dict:
+                # Convert price to float
+                if 'price' in car_dict:
+                    try:
+                        car_dict['price'] = float(car_dict['price'])
+                    except ValueError:
+                        car_dict['price'] = 0.0
+                car_dicts.append(car_dict)
+
+        return car_dicts

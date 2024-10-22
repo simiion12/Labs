@@ -62,6 +62,28 @@ def get_car_objects_from_data(data):
                 d.get('price', 0), d.get('link', 'N/A')) for d in data]
 
 
+def change_to_mdl_currency(cars):
+    """Change the price of the cars from EUR to MDL using Map."""
+    def update_price(car):
+        updated_car = car.copy()
+        updated_car["price"] = float(car.get("price", 0)) * 20.5
+        return updated_car
+
+    cars_price_mdl = list(map(update_price, cars))
+
+    return cars_price_mdl
+
+
+def save_statistics(statistics, filename):
+    """Save the statistics to a JSON file."""
+    with open(filename, 'w', encoding='utf-8') as file:
+        file.write("{\n")
+        for key, value in statistics.items():
+            formatted_value = f'"{value}"' if isinstance(value, str) else value
+            file.write(f'    "{key}": {formatted_value},\n')
+        file.write("}")
+
+
 def save_json(cars, filename):
     """Save the cars to a JSON file."""
     json_output = Car.serialize_list_to_json(cars)
@@ -103,23 +125,13 @@ def read_xml(filename):
     return cars_list
 
 
-def change_to_mdl_currency(cars):
-    """Change the price of the cars from EUR to MDL using Map."""
-    def update_price(car):
-        updated_car = car.copy()
-        updated_car["price"] = float(car.get("price", 0)) * 20.5
-        return updated_car
-
-    cars_price_mdl = list(map(update_price, cars))
-
-    return cars_price_mdl
+def save_to_file(data, filename):
+    """Generic function to save data to a file."""
+    with open(filename, mode='w', encoding='utf-8') as file:
+        file.write(data)
 
 
-def save_statistics(statistics, filename):
-    """Save the statistics to a JSON file."""
-    with open(filename, 'w', encoding='utf-8') as file:
-        file.write("{\n")
-        for key, value in statistics.items():
-            formatted_value = f'"{value}"' if isinstance(value, str) else value
-            file.write(f'    "{key}": {formatted_value},\n')
-        file.write("}")
+def read_from_file(filename):
+    """Generic function to read data from a file."""
+    with open(filename, 'r', encoding='utf-8') as file:
+        return file.read()
