@@ -18,9 +18,12 @@ class JsonWeatherDataParser(WeatherDataParser):
             location = Location.from_dict(json_data['location'])
             astronomy = Astronomy.from_dict(json_data['astronomy'])
             return WeatherData(location=location, astronomy=astronomy)
+        except json.JSONDecodeError as e:
+            raise ValueError(f"Invalid JSON format: {str(e)}")
+        except KeyError as e:
+            raise ValueError(f"Missing required field in JSON data: {str(e)}")
         except Exception as e:
-            print(f"An error occurred: {e}")
-            return None
+            raise ValueError(f"Error parsing weather data: {str(e)}")
 
 
 class XmlWeatherDataParser(WeatherDataParser):
@@ -30,5 +33,4 @@ class XmlWeatherDataParser(WeatherDataParser):
             astronomy = Astronomy.from_xml(data)
             return WeatherData(location=location, astronomy=astronomy)
         except Exception as e:
-            print(f"An error occurred: {e}")
-            return None
+            raise ValueError(f"Error parsing weather data: {str(e)}")
