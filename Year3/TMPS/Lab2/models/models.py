@@ -70,7 +70,7 @@ class Astronomy:
     @classmethod
     def from_xml(cls, data: str) -> 'Astronomy':
         root = ET.fromstring(data)
-        astro = root.find('astronomy')
+        astro = root.find('astronomy/astro')
         return cls(
             sunrise=astro.find('sunrise').text,
             sunset=astro.find('sunset').text,
