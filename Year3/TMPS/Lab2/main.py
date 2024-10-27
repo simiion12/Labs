@@ -1,61 +1,47 @@
 import requests
-from anyio import sleep
 
-from config import API_KEY
+from Labs.Year3.TMPS.Lab2.utils import choose_format, choose_report_type, generate_report
+from config import API_KEY, URL
 from Labs.Year3.TMPS.Lab2.cache.cache_manager import *
 from Labs.Year3.TMPS.Lab2.parsers.parser_factory import WeatherParserFactory
-from Labs.Year3.TMPS.Lab2.builders.weather_report_builder import WeatherReportBuilder, WeatherReportDirector
 
-import time
-url = f"http://api.weatherapi.com/v1/astronomy.json"
 
-q = 'Paris'
-dt = '2024-10-25'
-params = {'key': API_KEY, 'q': q, 'dt': dt}
+def main():
+    print("Weather Report Builder")
+    print("1. Enter the location, date and format to get the weather report")
+    print("2. Exit")
+    choice = int(input("Enter your choice: "))
+    while choice != 2:
+        if choice == 1:
+            location = input("Enter the location: ")
+            date = input("Enter the date (yyyy-mm-dd): ")
+            format = choose_format()
+            params = {'key': API_KEY, 'q': location, 'dt': date}
+            url = URL + f".{format}"
+            response = requests.get(url, params=params)
 
-cache = WeatherDataCache()
-cache.set_ttl(minutes=15)
-cache.set_max_size(100)
+            cache = WeatherDataCache()
+            cache.set_ttl(minutes=15)
+            cache.set_max_size(100)
+            key = generate_weather_cache_key(location, date)
+            if cache.get(key) is None:
+                weather_data = WeatherParserFactory.get_parser(format).parse(response.text)
+                cache.set(key, weather_data)
+                report_type = choose_report_type()
+                report = generate_report(weather_data, report_type)
+                print(report)
+            else:
+                weather_data = cache.get(key)
+                report_type = choose_report_type()
+                report = generate_report(weather_data, report_type)
+                print(report)
+        else:
+            print("Invalid choice. Please try again.")
 
-key = generate_weather_cache_key(q, dt)
-response = requests.get(url, params=params)
-data = response.text
+        print("1. Enter the location, date and format to get the weather report")
+        print("2. Exit")
 
-weather_data = WeatherParserFactory.get_parser('json').parse(data)
-builder = WeatherReportBuilder(weather_data)
-basic_report = WeatherReportDirector.create_basic_report(builder)
-print("Basic Report:")
-print(basic_report)
+    print("Exiting program.")
 
-print(data)
-
-# print("First request:")
-# if cache.get(key):
-#     print("Retrieved from cache:", cache.get(key))
-# else:
-#     response = requests.get(url, params=params)
-#     data = response.text
-#     parsed_data = WeatherParserFactory.get_parser('xml').parse(data)
-#     cache.set(key, parsed_data)
-#     print("Retrieved from API:", parsed_data)
-# time.sleep(10)
-# print("\nSecond request:")
-# if cache.get(key):
-#     print("Retrieved from cache:", cache.get(key))
-# else:
-#     response = requests.get(url, params=params)
-#     data = response.text
-#     parsed_data = WeatherParserFactory.get_parser('xml').parse(data)
-#     cache.set(key, parsed_data)
-#     print("Retrieved from API:", parsed_data)
-# time.sleep(10)
-#
-# print("\nThird request:")
-# if cache.get(key):
-#     print("Retrieved from cache:", cache.get(key))
-# else:
-#     response = requests.get(url, params=params)
-#     data = response.text
-#     parsed_data = WeatherParserFactory.get_parser('xml').parse(data)
-#     cache.set(key, parsed_data)
-#     print("Retrieved from API:", parsed_data)
+if __name__ == '__main__':
+    main()
