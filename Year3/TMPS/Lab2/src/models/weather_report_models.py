@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from Labs.Year3.TMPS.Lab2.models.models import Astronomy
+from Labs.Year3.TMPS.Lab2.src.models.models import Astronomy
 
 
 @dataclass

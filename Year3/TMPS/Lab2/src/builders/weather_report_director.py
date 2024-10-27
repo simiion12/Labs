@@ -1,6 +1,6 @@
-from Labs.Year3.TMPS.Lab2.builders.weather_report_builder import WeatherReportBuilder
-from Labs.Year3.TMPS.Lab2.models.models import WeatherData
-from Labs.Year3.TMPS.Lab2.models.weather_report_models import BaseWeatherReport, StandardWeatherReport, \
+from Labs.Year3.TMPS.Lab2.src.builders.weather_report_builder import WeatherReportBuilder
+from Labs.Year3.TMPS.Lab2.src.models.models import WeatherData
+from Labs.Year3.TMPS.Lab2.src.models.weather_report_models import BaseWeatherReport, StandardWeatherReport, \
     AdvancedWeatherReport
 
 

@@ -1,5 +1,5 @@
-from Labs.Year3.TMPS.Lab2.builders.weather_report_builder import WeatherReportBuilder
-from Labs.Year3.TMPS.Lab2.builders.weather_report_director import WeatherReportDirector
+from Labs.Year3.TMPS.Lab2.src.builders.weather_report_builder import WeatherReportBuilder
+from Labs.Year3.TMPS.Lab2.src.builders.weather_report_director import WeatherReportDirector
 
 
 def choose_format():

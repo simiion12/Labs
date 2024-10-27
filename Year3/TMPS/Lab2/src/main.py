@@ -1,9 +1,9 @@
 import requests
 
-from Labs.Year3.TMPS.Lab2.utils import choose_format, choose_report_type, generate_report
-from config import API_KEY, URL
-from Labs.Year3.TMPS.Lab2.cache.cache_manager import *
-from Labs.Year3.TMPS.Lab2.parsers.parser_factory import WeatherParserFactory
+from Labs.Year3.TMPS.Lab2.src.utils import choose_format, choose_report_type, generate_report
+from Labs.Year3.TMPS.Lab2.src.config import API_KEY, URL
+from Labs.Year3.TMPS.Lab2.src.parsers.parser_factory import WeatherParserFactory
+from Labs.Year3.TMPS.Lab2.src.cache.cache_manager import WeatherDataCache, generate_weather_cache_key
 
 
 def main():

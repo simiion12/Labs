@@ -1,7 +1,7 @@
 import json
 from abc import ABC, abstractmethod
 
-from Labs.Year3.TMPS.Lab2.models.models import Location, Astronomy, Current, Day, WeatherData
+from Labs.Year3.TMPS.Lab2.src.models.models import Location, Astronomy, Current, Day, WeatherData
 
 
 # Abstract Parser Interface

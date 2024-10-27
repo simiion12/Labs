@@ -1,4 +1,4 @@
-from Labs.Year3.TMPS.Lab2.parsers.parsers import JsonWeatherDataParser, XmlWeatherDataParser
+from Labs.Year3.TMPS.Lab2.src.parsers.parsers import JsonWeatherDataParser, XmlWeatherDataParser
 
 class WeatherParserFactory:
     _parsers = {
