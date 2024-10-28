@@ -1,11 +1,10 @@
 version: '3'
 
 services:
-
   fastapi:
     build: .
     container_name: PR-Lab2
-    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
     volumes:
       - ./src:/app/src
     working_dir: /app
@@ -15,7 +14,6 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-
     depends_on:
       - postgres
     ports:
