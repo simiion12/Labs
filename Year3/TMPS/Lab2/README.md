@@ -1,61 +1,117 @@
-# Weather Forecasting System - Creational Design Patterns
+# Creational Design Patterns
+## Author: Cuzmin Simion
+----
+## Objectives:
+* Get familiar with the Creational Design Patterns;
+* Choose a specific domain and define its main classes/models;
+* Implement at least 3 Creational Design Patterns for the specific domain;
 
-## Objectives
+## Used Design Patterns:
+* Singleton Pattern
+* Builder Pattern
+* Factory Method Pattern
 
-1. **Study and Understand Creational Design Patterns**  
-   Learn and apply various creational design patterns (Singleton, Builder, Factory Method) to handle object creation effectively in an object-oriented programming context.
-
-2. **Define Domain and Main Classes**  
-   Select a domain, define essential models and classes, and identify suitable instantiation mechanisms using creational design patterns.
-
-3. **Implement Creational Patterns in a Sample Project**  
-   Implement at least three creational design patterns to demonstrate object instantiation and management in the selected domain.
-
----
-
-## Theory
-
-In software engineering, **Creational Design Patterns** provide solutions to manage object creation, making the process more flexible and efficient. Without patterns, object instantiation can lead to increased complexity and potential design issues. Creational patterns introduce standard ways to create objects, often by controlling, hiding, or optimizing the process.
-
-### Common Creational Patterns
-- **Singleton**: Ensures only one instance of a class is created, with global access to that instance.
-- **Builder**: Constructs complex objects by piecing together parts step-by-step.
-- **Factory Method**: Provides an interface for creating objects and allows subclasses to alter the type of object that will be created.
-
----
-
-## Project Overview: Weather Forecasting System
-
-### Description
+## Implementation
 
 This project implements a **Weather Forecasting System** designed to collect, process, and forecast weather data for various regions using three creational design patterns. The system fetches weather data from an API, caches it to improve efficiency, and generates customized reports based on user preferences.
 
-### Implemented Creational Patterns
 
-1. **Factory Method**: Instantiates different types of weather data parsers (`JSONParser`, `XMLParser`) based on the chosen format, allowing flexibility in data handling.
-2. **Singleton**: Manages a single instance of the `WeatherDataCache` class, which stores frequently accessed weather data to reduce redundant API calls.
-3. **Builder**: Constructs flexible and customizable weather reports with sections for temperature, humidity, and forecast, based on user-selected report type.
+Here are the key implementations:
 
----
+### 1. Singleton Pattern (Cache Manager)
+Used to maintain a single instance of the weather data cache throughout the application:
 
-## Main Project Tasks
+```python
+class WeatherDataCache:
+    _instance = None
+    _lock = Lock()
 
-1. **Choose Programming Language and IDE**  
-   Implemented in Python without external frameworks, using standard libraries to demonstrate pattern implementation.
+    def __new__(cls):
+        if cls._instance is None:
+            with cls._lock:  # Double-checked locking pattern
+                if cls._instance is None:
+                    cls._instance = super().__new__(cls)
+                    cls._instance._initialize_cache()
+        return cls._instance
+```
 
-2. **Domain Selection and Class Definition**  
-   - **Domain**: Weather Forecasting System.
-   - **Classes/Entities**:
-     - `WeatherDataCache`: Manages caching of weather data.
-     - `WeatherReportDirector` and `WeatherReportBuilder`: Implements the Builder pattern to construct customizable weather reports.
-     - `WeatherParserFactory`: Uses the Factory Method pattern to select the appropriate parser for the chosen data format.
+### 2. Factory Method Pattern (Parser Creation)
+Handles the creation of different parser types based on data format:
 
-3. **Creational Design Pattern Implementation**  
-   The project demonstrates the use of Singleton, Builder, and Factory Method patterns to achieve efficient object management and reusability.
+```python
+class WeatherParserFactory:
+    _parsers = {
+        'json': JsonWeatherDataParser,
+        'xml': XmlWeatherDataParser
+    }
 
----
+    @staticmethod
+    def get_parser(parser_type: str):
+        parser = WeatherParserFactory._parsers.get(parser_type.lower())
+        if not parser:
+            raise ValueError(f"Invalid parser type: {parser_type}")
+        return parser()
 
-## Code Overview
+```
+
+### 3. Builder Pattern (Weather Report Construction)
+Enables step-by-step construction of weather reports with different components:
+
+```python
+class WeatherReportBuilder:
+    def __init__(self):
+        self.reset()
+
+    def reset(self) -> None:
+        self._report_data: Dict[str, Any] = {}
+
+    def set_location_data(self, location: Location) -> 'WeatherReportBuilder':
+        """Set basic location data"""
+         pass
+
+    def set_standard_location_data(self, location: Location) -> 'WeatherReportBuilder':
+         """Set extended location data"""
+         pass
+
+         def set_current_conditions(self, current: Current) -> 'WeatherReportBuilder':
+        """Set basic current conditions"""
+         pass
+
+    def set_advanced_conditions(self, current: Current) -> 'WeatherReportBuilder':
+        """Set advanced current conditions"""
+         pass
+
+    def set_day_data(self, day: Day) -> 'WeatherReportBuilder':
+        """Set basic day data"""
+         pass
+
+    def set_standard_day_data(self, day: Day) -> 'WeatherReportBuilder':
+        """Set extended day data"""
+         pass
+
+    def set_advanced_day_data(self, day: Day) -> 'WeatherReportBuilder':
+        """Set advanced day data"""
+         pass
+
+    def set_astronomy_data(self, astronomy: Astronomy) -> 'WeatherReportBuilder':
+        """Set astronomy data"""
+         pass
+
+    def build_basic(self) -> BaseWeatherReport:
+        """Build basic weather report"""
+         pass
+
+    def build_standard(self) -> StandardWeatherReport:
+        """Build standard weather report"""
+         pass
+
+    def build_advanced(self) -> AdvancedWeatherReport:
+        """Build advanced weather report"""
+         pass
+
+```
+
+## Project Structure
 The project is organized into several modules, each responsible for a different aspect of the weather forecasting system. Below is an overview of the key modules and files:
 
 ```
@@ -88,7 +144,6 @@ Lab2
 │   requirements.txt        
 ```
 
-
 ### Module Descriptions
 
 - **`builders`**: Implements the Builder pattern to construct weather reports. `weather_report_builder.py` defines the Builder logic, and `weather_report_director.py` controls the assembly of the report components.
@@ -99,14 +154,12 @@ Lab2
 - **`main.py`**: The main entry point for the application. Handles user input, retrieves weather data, and generates reports.
 - **`utils.py`**: Provides utility functions that assist in user input handling and report generation.
 
----
 
-## Summary
+## Conclusions
+The implementation of creational design patterns in this Weather Forecasting System has resulted in:
+* Efficient data management through centralized caching (Singleton)
+* Flexible report generation system that can be easily extended (Builder)
+* Modular and maintainable parser creation mechanism (Factory Method)
+* Clear separation of concerns and improved code organization
 
-This laboratory work demonstrates the use of creational design patterns to structure and manage a Weather Forecasting System. By implementing Singleton, Builder, and Factory Method patterns, the project achieves:
-
-- **Reduced Redundancy**: Singleton pattern ensures a single cache instance, reducing redundant API calls.
-- **Flexible Report Generation**: Builder pattern allows the creation of customizable weather reports.
-- **Data Flexibility**: Factory Method pattern enables seamless parsing of data in various formats.
-
-This approach enhances the system’s maintainability, scalability, and efficiency, providing a robust architecture for future extensions or modifications.
+These patterns have significantly improved the system's maintainability and scalability while reducing code duplication and complexity.
