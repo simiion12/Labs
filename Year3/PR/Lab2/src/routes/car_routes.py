@@ -1,8 +1,9 @@
 from uuid import UUID
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from fastapi import Depends, HTTPException, status
+from typing import List
 
 from src.models.schemas import CarCreate, CarUpdate
 from src.models.models import car
@@ -51,7 +52,7 @@ async def update_car(car_id: UUID,
                car_update: CarUpdate,
                db: AsyncSession = Depends(get_async_session)):
     """Update car information"""
-    query = select(car).where(car.c.id == car_id).exists()
+    query = select(car).where(car.c.id == car_id)
     result = await db.execute(query)
     existing_info = result.fetchone()
 
@@ -92,7 +93,7 @@ async def update_car(car_id: UUID,
 async def delete_car(car_id: UUID,
                      db: AsyncSession = Depends(get_async_session)):
     """Delete car information"""
-    query = select(car).where(car.c.id == car_id).exists()
+    query = select(car).where(car.c.id == car_id)
     result = await db.execute(query)
     existing_info = result.fetchone()
 
@@ -132,3 +133,64 @@ async def get_car(car_id: UUID,
         )
 
     return car_info
+
+
+# @router.get("/", response_model=List[CarCreate])
+# async def get_cars(
+#         offset: int = Query(0, ge=0),  # Offset starts from 0, must be non-negative
+#         limit: int = Query(10, ge=1, le=100), # Limit defaults to 10, between 1 and 100
+#         db: AsyncSession = Depends(get_async_session)):
+#     """
+#     Get paginated list of cars
+#
+#     Parameters:
+#     - offset: Number of items to skip (default 0)
+#     - limit: Maximum number of items to return (default 10, max 100)
+#
+#     Returns:
+#     List of cars
+#     """
+#     try:
+#         # Create a query with offset and limit
+#         query = select(car).offset(offset).limit(limit)
+#
+#         # Execute the query
+#         result = await db.execute(query)
+#         cars_list = result.fetchall()
+#
+#         # Check if no cars found
+#         if not cars_list:
+#             raise HTTPException(
+#                 status_code=status.HTTP_404_NOT_FOUND,
+#                 detail="No cars found"
+#             )
+#
+#         return cars_list
+#     except Exception as e:
+#         raise HTTPException(
+#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#             detail=f"An error occurred: {str(e)}"
+#         )
+#
+#
+# @router.get("/count")
+# async def get_cars_count(db: AsyncSession = Depends(get_async_session)):
+#     """
+#     Get total number of cars in the database
+#
+#     Returns:
+#     Total count of cars
+#     """
+#     try:
+#         # Count total number of cars
+#         query = select(car.c.id).count()
+#         result = await db.execute(query)
+#         count = result.scalar_one()
+#
+#         return {"total_cars": count}
+#     except Exception as e:
+#         raise HTTPException(
+#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#             detail=f"An error occurred: {str(e)}"
+#         )
+#
