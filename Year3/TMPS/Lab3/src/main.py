@@ -1,51 +1,59 @@
-import requests
-
-from Labs.Year3.TMPS.Lab3.src.utils import choose_format, choose_report_type, generate_report
-from Labs.Year3.TMPS.Lab3.src.config import API_KEY, URL
-from Labs.Year3.TMPS.Lab3.src.parsers.parser_factory import WeatherParserFactory
-from Labs.Year3.TMPS.Lab3.src.cache.cache_manager import WeatherDataCache, generate_weather_cache_key
-from Labs.Year3.TMPS.Lab3.src.decorators.decorators import WeatherReportDecorator, AlertDecorator
+from Year3.TMPS.Lab3.src.facade.weather_facade import WeatherSystemFacade
 
 
 def main():
-    print("Weather Report Builder")
-    print("1. Enter the location, date and format to get the weather report")
-    print("2. Exit")
-    choice = int(input("Enter your choice: "))
-    while choice != 2:
-        if choice == 1:
-            location = input("Enter the location: ")
-            date = input("Enter the date (yyyy-mm-dd): ")
-            format = choose_format()
-            params = {'key': API_KEY, 'q': location, 'dt': date}
-            url = URL + f".{format}"
-            response = requests.get(url, params=params)
+    weather_system = WeatherSystemFacade()
 
-            cache = WeatherDataCache()
+    while True:
+        print("\nWeather Information System")
+        print("1. Get Single Station Report")
+        print("2. Get Regional Report")
+        print("3. Manage Regions")
+        print("4. View Cache Statistics")
+        print("5. Exit")
 
-            cache.set_ttl(minutes=15)
-            cache.set_max_size(100)
-            key = generate_weather_cache_key(location, date)
-            if cache.get(key) is None:
-                weather_data = WeatherParserFactory.get_parser(format).parse(response.text)
-                cache.set(key, weather_data)
-                report_type = choose_report_type()
-                report = generate_report(weather_data, report_type)
-                report_with_alerts = AlertDecorator(report).get_data()
-                print(report_with_alerts)
-            else:
-                weather_data = cache.get(key)
-                report_type = choose_report_type()
+        choice = input("Enter your choice: ")
 
-                report = generate_report(weather_data, report_type)
-                print(report)
-        else:
-            print("Invalid choice. Please try again.")
+        if choice == '1':
+            location = input("Enter location: ")
+            date = input("Enter date (yyyy-mm-dd): ")
 
-        print("1. Enter the location, date and format to get the weather report")
-        print("2. Exit")
+            report = weather_system.get_weather_report(location, date)
+            print(report)
 
-    print("Exiting program.")
+        elif choice == '2':
+            region = input("Enter region name: ")
+            date = input("Enter date (yyyy-mm-dd): ")
+
+            report = weather_system.get_region_report(region, date)
+            print(report)
+
+        elif choice == '3':
+            print("\nRegion Management")
+            print("1. Create new region")
+            print("2. Add station to region")
+
+            mgmt_choice = input("Enter choice: ")
+            if mgmt_choice == '1':
+                region = input("Enter new region name: ")
+                weather_system.add_region(region)
+                print(f"Region {region} created")
+            elif mgmt_choice == '2':
+                region = input("Enter region name: ")
+                station = input("Enter station location: ")
+                weather_system.add_station_to_region(region, station)
+                print(f"Added {station} to {region}")
+
+        elif choice == '4':
+            stats = weather_system.cache.get_stats()
+            print("\nCache Statistics:")
+            print(f"Size: {stats['size']}/{stats['max_size']}")
+            print(f"TTL: {stats['ttl_minutes']} minutes")
+
+        elif choice == '5':
+            print("Exiting...")
+            break
+
 
 if __name__ == '__main__':
     main()

@@ -1,6 +1,6 @@
 from typing import Dict, Any
-from Labs.Year3.TMPS.Lab2.src.models.models import Location, Current, Day
-from Labs.Year3.TMPS.Lab2.src.models.weather_report_models import BaseWeatherReport, StandardWeatherReport, AdvancedWeatherReport, Astronomy
+from Year3.TMPS.Lab3.src.models.models import Location, Current, Day
+from Year3.TMPS.Lab3.src.models.weather_report_models import BaseWeatherReport, StandardWeatherReport, AdvancedWeatherReport, Astronomy
 
 
 class WeatherReportBuilder:
