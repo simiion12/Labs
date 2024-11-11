@@ -36,7 +36,7 @@ Building upon the existing Weather System that used creational patterns (Singlet
 
 1. **Decorator Pattern** (`AlertDecorator`)
 
-    Used to dynamically add weather alerts to weather reports based on conditions. The decorator wraps the weather report object and adds alert functionality without modifying the original report structure.
+    Used to dynamically add weather alerts to weather reports based on conditions. The decorator wraps the weather report object and adds alert functionality without modifying the original report structure. This decorator enhances weather reports by analyzing temperature and wind conditions to generate appropriate weather alerts. It seamlessly combines these alerts with the original report while maintaining the original report's interface. The enhancement process is transparent to the client, allowing for dynamic addition of alert functionality without disrupting the existing report structure.
 
 ```python
 class AlertDecorator:
@@ -63,15 +63,10 @@ class AlertDecorator:
 {weather_report}
 """
 ```
-This decorator enhances weather reports by:
-- Analyzing temperature and wind conditions
-- Generating appropriate weather alerts
-- Combining alerts with the original report
-- Maintaining the original report's interface
 
 2. **Composite Pattern** (Weather Monitoring Hierarchy)
 
-    Implemented a tree structure for weather monitoring where individual weather stations can be grouped into regions. Both individual stations and regions share a common interface through the `WeatherComponent` abstract class.
+    Implemented a tree structure for weather monitoring where individual weather stations can be grouped into regions. Both individual stations and regions share a common interface through the `WeatherComponent` abstract class. This pattern enables a seamless hierarchical organization of weather stations while ensuring uniform treatment of both individual stations and entire regions. It automatically handles the calculation of regional statistics across all stations and makes it straightforward to add new monitoring points to any level of the hierarchy. The flexibility of this structure allows the system to grow organically while maintaining consistent behavior across all components.
 
 ```python
 # Base Component
@@ -93,22 +88,59 @@ class WeatherStation(WeatherComponent):
     def get_report(self, date: str) -> str:
         return self.weather_service.get_weather_report(self.location, date)
 
+    def get_name(self) -> str:
+        return self.location
+
+    def add_component(self, component: 'WeatherComponent') -> None:
+        raise NotImplementedError("Weather stations cannot have sub-components")
+
+    def remove_component(self, component: 'WeatherComponent') -> None:
+        raise NotImplementedError("Weather stations cannot have sub-components")
+
+    def get_components(self) -> List['WeatherComponent']:
+        return []
+
 # Composite
 class RegionMonitor(WeatherComponent):
     def __init__(self, name: str):
         self.name = name
         self.components: List[WeatherComponent] = []
 
+    def get_name(self) -> str:
+        return self.name
+
     def add_component(self, component: WeatherComponent) -> None:
         self.components.append(component)
 
+    def remove_component(self, component: WeatherComponent) -> None:
+        self.components.remove(component)
+
+    def get_components(self) -> List[WeatherComponent]:
+        return self.components
+
     def get_report(self, date: str) -> str:
-        # Aggregates reports from all components and calculates statistics
+        if not self.components:
+            return f"No stations in region {self.name}"
+
+        # Collect and aggregate component reports
+        reports = []
+        stats = self._calculate_statistics(date)
+
+        report = f"""
+Regional Weather Report for {self.name}
+Generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+
+Summary Statistics:
+{self._format_statistics(stats)}
+
+Individual Station Reports:
+{'-' * 50}
+"""
 ```
 
 3. **Facade Pattern** (`WeatherSystemFacade`)
 
-    Provides a simplified interface to the complex weather system, handling the interaction between various components like cache, parsers, report builders, and the composite structure.
+    Provides a simplified interface to the complex weather system, handling the interaction between various components like cache, parsers, report builders, and the composite structure.The facade handles all complex operations including cache checking and updates, data parsing and formatting, report generation with decorations, and comprehensive region and station management. This centralized control point streamlines the interaction between different system components while hiding their complexity from the client.
 
 ```python
 class WeatherSystemFacade(WeatherService):
@@ -118,14 +150,52 @@ class WeatherSystemFacade(WeatherService):
         self.report_builder = WeatherReportBuilder()
         self.regions: Dict[str, RegionMonitor] = {}
 
+        self.cache.set_ttl(minutes=15)
+        self.cache.set_max_size(100)
+
     def get_weather_report(self, location: str, date: str) -> str:
-        # Handles all the complexity of getting weather data and generating reports
-        
+        try:
+            format = self._get_format()
+            # Get from cache or fetch new data
+            weather_data = self._get_weather_data(location, date, format)
+
+            # Generate report
+            report_type = self._get_report_type()
+            report = self._generate_report(weather_data, report_type)
+            report_with_alerts = AlertDecorator(report).get_data()
+            return str(report_with_alerts)
+        except Exception as e:
+            return f"Error getting weather report: {str(e)}"
+
     def add_region(self, region_name: str) -> None:
-        # Simplifies region management
-        
+        if region_name not in self.regions:
+            self.regions[region_name] = RegionMonitor(region_name)
+
     def add_station_to_region(self, region_name: str, station_location: str) -> None:
-        # Simplifies station management
+        if region_name not in self.regions:
+            self.add_region(region_name)
+
+        station = WeatherStation(station_location, self)
+        self.regions[region_name].add_component(station)
+
+    def get_region_report(self, region_name: str, date: str) -> str:
+        format = self._get_format()
+        region = self.regions.get(region_name)
+        if not region:
+            return f"Region {region_name} not found"
+        return region.get_report(date)
+
+    def _get_weather_data(self, location: str, date: str, format: str) -> Dict:
+        params = {'key': API_KEY, 'q': location, 'dt': date}
+        url = URL + f".{format}"
+        response = requests.get(url, params=params)
+        key = generate_weather_cache_key(location, date)
+        if self.cache.get(key) is None:
+            weather_data = WeatherParserFactory.get_parser(format).parse(response.text)
+            self._set_cache(key, weather_data)
+            return weather_data
+        else:
+            return self._get_cache(key)
 ```
 
 ## Project Structure
