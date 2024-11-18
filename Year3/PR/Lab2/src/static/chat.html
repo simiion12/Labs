@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Room - {username}</title>
+    <style>
+        #messages, #status {
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+        .error { color: red; }
+        .success { color: green; }
+        .info { color: blue; }
+        #userInfo {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="userInfo">
+        Connected as: <span id="currentUser">{username}</span>
+    </div>
+    <div>
+        <h3>Connection Status:</h3>
+        <div id="status"></div>
+    </div>
+    <div>
+        <h3>Messages:</h3>
+        <div id="messages"></div>
+    </div>
+    <input type="text" id="messageInput" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+    <button onclick="connect()">Reconnect</button>
+
+    <script>
+        const statusDiv = document.getElementById('status');
+        const messagesDiv = document.getElementById('messages');
+        const messageInput = document.getElementById('messageInput');
+        const username = document.getElementById('currentUser').textContent;
+        let ws;
+
+        function addStatus(message, type = 'info') {
+            const div = document.createElement('div');
+            // Use backticks for template literals
+            div.textContent = `${new Date().toLocaleTimeString()} - ${message}`;
+            div.className = type;
+            statusDiv.appendChild(div);
+            statusDiv.scrollTop = statusDiv.scrollHeight;
+        }
+
+        function addMessage(message) {
+            const div = document.createElement('div');
+            div.textContent = message;
+            messagesDiv.appendChild(div);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function connect() {
+            addStatus(`Attempting to connect as ${username}...`);
+            
+            try {
+                ws = new WebSocket(`ws://localhost:8001/chat/ws/${username}`);
+
+                ws.onopen = function() {
+                    addStatus('Connected successfully!', 'success');
+                };
+
+                ws.onmessage = function(event) {
+                    addMessage(event.data);
+                };
+
+                ws.onclose = function(event) {
+                    addStatus(`Connection closed. Code: ${event.code}, Reason: ${event.reason}`, 'error');
+                };
+
+                ws.onerror = function(error) {
+                    addStatus('WebSocket error occurred', 'error');
+                    console.error('WebSocket error:', error);
+                };
+            } catch (error) {
+                addStatus(`Error creating WebSocket: ${error.message}`, 'error');
+            }
+        }
+
+        function sendMessage() {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                addStatus('Not connected to server', 'error');
+                return;
+            }
+
+            const message = messageInput.value;
+            if (message) {
+                try {
+                    ws.send(message);
+                    messageInput.value = '';
+                    addStatus('Message sent', 'success');
+                } catch (error) {
+                    addStatus(`Error sending message: ${error.message}`, 'error');
+                }
+            }
+        }
+
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Initial connection
+        connect();
+    </script>
+</body>
+</html>
