@@ -1,4 +1,4 @@
-# Structural Design Patterns
+# Behavioral Design Patterns
 
 ## Author: Cuzmin Simion
 
@@ -6,196 +6,117 @@
 
 ## Objectives:
 
-1. Study and understand the Structural Design Patterns
-2. Extend the previous laboratory work by adding structural design patterns
-3. Keep the same theme - Weather System - and add additional functionalities using structural patterns
+1. Study and understand the Behavioral Design Patterns.
+2. As a continuation of the previous laboratory work, think about what communication between software entities might be involed in your system.
+3. Implement some additional functionalities using behavioral design patterns.
 
 ## Used Design Patterns:
 
-1. **Decorator Pattern**
+1. **Observer**
 
-    **Decorator** is a structural design pattern that lets you attach new behaviors to objects by placing these objects inside special wrapper objects that contain the behaviors.
+    **Observer** is a behavioral design pattern that lets you define a subscription mechanism to notify multiple objects about any events that happen to the object they’re observing.
     
-    ![Decorator Pattern](https://refactoring.guru/images/patterns/diagrams/decorator/structure.png)
+    ![image](https://refactoring.guru/images/patterns/diagrams/observer/example.png)
 
-2. **Composite Pattern**
+2. **Strategy**
 
-    **Composite** is a structural design pattern that lets you compose objects into tree structures and then work with these structures as if they were individual objects.
+    **Strategy** is a behavioral design pattern that lets you define a family of algorithms, put each of them into a separate class, and make their objects interchangeable.
     
-    ![image](https://github.com/user-attachments/assets/ede26d6b-49b6-46f9-a0f1-84a156f9b8e1)
+    ![image](https://refactoring.guru/images/patterns/diagrams/strategy/structure.png)
 
-3. **Facade Pattern**
 
-    **Facade** is a structural design pattern that provides a simplified interface to a library, a framework, or any other complex set of classes.
-    
-    ![Facade Pattern](https://refactoring.guru/images/patterns/diagrams/facade/structure.png)
 
 ## Implementation
 
-Building upon the existing Weather System that used creational patterns (Singleton, Factory, and Builder), I've implemented three structural patterns to enhance the system's functionality and organization:
+Building upon the existing Weather System that used creational patterns (Singleton, Factory, and Builder) together with three another structural patterns (Decorator, Composite, Facade),  I've implemented two behavioral patterns to enhance the system's functionality and organization:
 
-1. **Decorator Pattern** (`AlertDecorator`)
+1. **Observer Pattern** (`Weather Alert System`)
 
-    Used to dynamically add weather alerts to weather reports based on conditions. The decorator wraps the weather report object and adds alert functionality without modifying the original report structure. This decorator enhances weather reports by analyzing temperature and wind conditions to generate appropriate weather alerts. It seamlessly combines these alerts with the original report while maintaining the original report's interface. The enhancement process is transparent to the client, allowing for dynamic addition of alert functionality without disrupting the existing report structure.
+Implements a real-time weather monitoring system that automatically notifies about dangerous weather conditions. This pattern allows weather stations to notify observers about changes in weather conditions without being tightly coupled to the alert system.
 
 ```python
-class AlertDecorator:
-    def __init__(self, weather_report):
-        self._weather_report = weather_report
+class AlertSystem(WeatherObserver):
+    def update(self, weather_data: Dict[str, Any]) -> None:
+        self._check_temperature(weather_data)
+        self._check_wind(weather_data)
+        self._check_precipitation(weather_data)
 
-    def get_data(self):
-        alerts = self._generate_weather_alerts(self._weather_report)
-        return self._combine_report_and_alerts(self._weather_report, alerts)
+    def _check_temperature(self, data: Dict[str, Any]) -> None:
+        temp = data.get('temperature_c')
+        if temp > 5:
+            self._log_alert(f"🔥 EXTREME HEAT WARNING: {temp}°C in {data['location']}")
+        elif temp > -10:
+            self._log_alert(f"❄️ EXTREME COLD WARNING: {temp}°C in {data['location']}")
 
-    def _generate_weather_alerts(self, data):
-        alerts = []
-        if data.temperature_c > 35:
-            alerts.append("Extreme heat warning!")
-        if data.wind_mph > 50:
-            alerts.append("High wind advisory!")
-        return alerts
+    def _check_wind(self, data: Dict[str, Any]) -> None:
+        wind = data.get('wind_mph', 0)
+        if wind > 50:
+            self._log_alert(f"💨 HIGH WIND ADVISORY: {wind} mph in {data['location']}")
 
-    def _combine_report_and_alerts(self, weather_report, alerts):
-        alerts_str = "\n".join(alerts) if alerts else "No active weather alerts."
-        return f"""
-{alerts_str}
+    def _check_precipitation(self, data: Dict[str, Any]) -> None:
+        precip = data.get('precipitation_mm', 0)
+        if precip > 50:
+            self._log_alert(f"🌧️ HEAVY RAIN ALERT: {precip}mm in {data['location']}")
 
-{weather_report}
-"""
+    def _log_alert(self, message: str) -> None:
+        print(f"\n[ALERT] {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print(message)
+
 ```
 
-2. **Composite Pattern** (Weather Monitoring Hierarchy)
+2. **Strategy Pattern** (Weather Calculation Methods)
 
-    Implemented a tree structure for weather monitoring where individual weather stations can be grouped into regions. Both individual stations and regions share a common interface through the `WeatherComponent` abstract class. This pattern enables a seamless hierarchical organization of weather stations while ensuring uniform treatment of both individual stations and entire regions. It automatically handles the calculation of regional statistics across all stations and makes it straightforward to add new monitoring points to any level of the hierarchy. The flexibility of this structure allows the system to grow organically while maintaining consistent behavior across all components.
-
-```python
-# Base Component
-class WeatherComponent(ABC):
-    @abstractmethod
-    def get_report(self, date: str) -> str:
-        pass
-    
-    @abstractmethod
-    def get_name(self) -> str:
-        pass
-
-# Leaf
-class WeatherStation(WeatherComponent):
-    def __init__(self, location: str, weather_service: WeatherService):
-        self.location = location
-        self.weather_service = weather_service
-
-    def get_report(self, date: str) -> str:
-        return self.weather_service.get_weather_report(self.location, date)
-
-    def get_name(self) -> str:
-        return self.location
-
-    def add_component(self, component: 'WeatherComponent') -> None:
-        raise NotImplementedError("Weather stations cannot have sub-components")
-
-    def remove_component(self, component: 'WeatherComponent') -> None:
-        raise NotImplementedError("Weather stations cannot have sub-components")
-
-    def get_components(self) -> List['WeatherComponent']:
-        return []
-
-# Composite
-class RegionMonitor(WeatherComponent):
-    def __init__(self, name: str):
-        self.name = name
-        self.components: List[WeatherComponent] = []
-
-    def get_name(self) -> str:
-        return self.name
-
-    def add_component(self, component: WeatherComponent) -> None:
-        self.components.append(component)
-
-    def remove_component(self, component: WeatherComponent) -> None:
-        self.components.remove(component)
-
-    def get_components(self) -> List[WeatherComponent]:
-        return self.components
-
-    def get_report(self, date: str) -> str:
-        if not self.components:
-            return f"No stations in region {self.name}"
-
-        # Collect and aggregate component reports
-        reports = []
-        stats = self._calculate_statistics(date)
-
-        report = f"""
-Regional Weather Report for {self.name}
-Generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-
-Summary Statistics:
-{self._format_statistics(stats)}
-
-Individual Station Reports:
-{'-' * 50}
-"""
-```
-
-3. **Facade Pattern** (`WeatherSystemFacade`)
-
-    Provides a simplified interface to the complex weather system, handling the interaction between various components like cache, parsers, report builders, and the composite structure.The facade handles all complex operations including cache checking and updates, data parsing and formatting, report generation with decorations, and comprehensive region and station management. This centralized control point streamlines the interaction between different system components while hiding their complexity from the client.
+    Provides different algorithms for calculating weather statistics, allowing regions to use different calculation methods based on their needs. This pattern separates various calculation algorithms from the main business logic.
 
 ```python
-class WeatherSystemFacade(WeatherService):
-    def __init__(self):
-        self.cache = WeatherDataCache()
-        self.parser_factory = WeatherParserFactory()
-        self.report_builder = WeatherReportBuilder()
-        self.regions: Dict[str, RegionMonitor] = {}
 
-        self.cache.set_ttl(minutes=15)
-        self.cache.set_max_size(100)
+class AverageCalculationStrategy(WeatherCalculationStrategy):
+    def calculate_statistics(self, weather_data: List[Dict]) -> Dict:
+        temps = [data['temperature'] for data in weather_data]
+        humidity = [data['humidity'] for data in weather_data]
+        pressure = [data['pressure'] for data in weather_data]
 
-    def get_weather_report(self, location: str, date: str) -> str:
-        try:
-            format = self._get_format()
-            # Get from cache or fetch new data
-            weather_data = self._get_weather_data(location, date, format)
+        return {
+            'avg_temperature': sum(temps) / len(temps),
+            'avg_humidity': sum(humidity) / len(humidity),
+            'avg_pressure': sum(pressure) / len(pressure),
+            'station_count': len(weather_data)
+        }
 
-            # Generate report
-            report_type = self._get_report_type()
-            report = self._generate_report(weather_data, report_type)
-            report_with_alerts = AlertDecorator(report).get_data()
-            return str(report_with_alerts)
-        except Exception as e:
-            return f"Error getting weather report: {str(e)}"
 
-    def add_region(self, region_name: str) -> None:
-        if region_name not in self.regions:
-            self.regions[region_name] = RegionMonitor(region_name)
+class WeightedAverageStrategy(WeatherCalculationStrategy):
+    def calculate_statistics(self, weather_data: List[Dict]) -> Dict:
+        # More weight to recent readings
+        weights = [0.5, 0.3, 0.2]  # Weights for last 3 readings
+        temps = [data['temperature'] for data in weather_data[-3:]]
+        humidity = [data['humidity'] for data in weather_data[-3:]]
+        pressure = [data['pressure'] for data in weather_data[-3:]]
+        return {
+            'avg_temperature': sum(t * w for t, w in zip(temps, weights)),
+            'avg_humidity': sum(h * w for h, w in zip(humidity, weights)),
+            'avg_pressure': sum(p * w for p, w in zip(pressure, weights)),
+            'station_count': len(weather_data)
+        }
 
-    def add_station_to_region(self, region_name: str, station_location: str) -> None:
-        if region_name not in self.regions:
-            self.add_region(region_name)
 
-        station = WeatherStation(station_location, self)
-        self.regions[region_name].add_component(station)
+class MedianCalculationStrategy(WeatherCalculationStrategy):
+    def calculate_statistics(self, weather_data: List[Dict]) -> Dict:
+        def median(values):
+            sorted_values = sorted(values)
+            mid = len(sorted_values) // 2
+            return sorted_values[mid]
 
-    def get_region_report(self, region_name: str, date: str) -> str:
-        format = self._get_format()
-        region = self.regions.get(region_name)
-        if not region:
-            return f"Region {region_name} not found"
-        return region.get_report(date)
+        temps = [data['temperature'] for data in weather_data]
+        humidity = [data['humidity'] for data in weather_data]
+        pressure = [data['pressure'] for data in weather_data]
 
-    def _get_weather_data(self, location: str, date: str, format: str) -> Dict:
-        params = {'key': API_KEY, 'q': location, 'dt': date}
-        url = URL + f".{format}"
-        response = requests.get(url, params=params)
-        key = generate_weather_cache_key(location, date)
-        if self.cache.get(key) is None:
-            weather_data = WeatherParserFactory.get_parser(format).parse(response.text)
-            self._set_cache(key, weather_data)
-            return weather_data
-        else:
-            return self._get_cache(key)
+        return {
+            'avg_temperature': median(temps),
+            'avg_humidity': median(humidity),
+            'avg_pressure': median(pressure),
+            'station_count': len(weather_data)
+        }
+
 ```
 
 ## Project Structure
@@ -213,6 +134,12 @@ Lab3
 │   └───facade
 │   │   │   __init__.py
 │   │   │   weather_facade.py
+│   └───interfaces
+│   │   │   __init__.py
+│   │   │   calculation_strategy.py
+│   │   │   weather_component.py
+│   │   │   weather_observer.py
+│   │   │   weather_service.py
 │   └───components
 │   │   │   __init__.py
 │   │   │   region_monitor.py
@@ -221,10 +148,16 @@ Lab3
 │   └───decorators
 │   │   │   __init__.py
 │   │   │   decorators.py
+│   └───observers
+│   │   │   __init__.py
+│   │   │   weather_observers.py
+│   └───strategies
+│   │   │   __init__.py
+│   │   │   calculation_strategy.py
 │   └───models
 │   │   │   __init__.py
 │   │   │   models.py
-│   │   │    weather_report_models.py
+│   │   │   weather_report_models.py
 │   └───parsers
 │   │   │   __init__.py
 │   │   │   parsers_factory.py
@@ -232,7 +165,6 @@ Lab3
 │   │   __init__.py
 │   │   config.py
 │   │   main.py
-│   │   utils.py
 │ 
 │   README.md
 │   __init__.py    
@@ -243,21 +175,18 @@ Lab3
 
 ## Conclusion
 
-The implementation of structural patterns has significantly improved the Weather System:
+The implementation of behavioral patterns has significantly improved the Weather System:
+1. **Observer Pattern Benefits:**
+   - Real-time weather monitoring
+   - Automatic alert generation
+   - Loosely coupled components
+   - Easy to add new types of notifications
 
-1. **Decorator Pattern** (AlertDecorator):
-   - Allows dynamic addition of weather alerts
-   - Maintains single responsibility principle
-   - Easy to add new types of alerts
+2. **Strategy Pattern Benefits:**
+   - Flexible calculation methods
+   - Easy to add new algorithms
+   - Runtime strategy switching
+   - Clean separation of algorithms
 
-2. **Composite Pattern** (Weather Monitoring Hierarchy):
-   - Creates a flexible structure for organizing weather stations
-   - Enables hierarchical data aggregation
-   - Provides uniform treatment of individual stations and groups
 
-3. **Facade Pattern** (WeatherSystemFacade):
-   - Simplifies client interaction with the system
-   - Encapsulates complex operations
-   - Provides a clean, high-level interface
-
-These patterns work together with the previously implemented creational patterns to create a robust, maintainable, and extensible weather monitoring system. The structural patterns have particularly improved the system's organization and made it easier to add new features while maintaining clean code principles.
+The combination of behavioral patterns with the existing creational and structural patterns has created a robust, flexible, and maintainable weather monitoring system.
