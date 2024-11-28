@@ -7,7 +7,7 @@ class ServerConfig:
     @classmethod
     def for_server(cls, server_num: int):
         return cls(
-            server_id=f"server_{server_num}",
+            server_id=f"node{server_num}",
             http_port=8000 + server_num,
             udp_port=5000 + server_num
         )
