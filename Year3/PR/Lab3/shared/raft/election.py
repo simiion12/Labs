@@ -121,14 +121,12 @@ class Election:
                 self.logger.info(f"Node {node_id} is inactive, removing from active nodes")
 
 
-
     def _one_node_handler(self):
-        time.sleep(12)
+        """Handle the case when there is only one node in the cluster"""
+        time.sleep(10)
         if len(self.active_nodes) == 1:
             """Handle the case when there is only one node in the cluster"""
             self.state.become_leader()
             self.logger.info("Node is the only node in the cluster, becoming leader")
             while True:
                 self.comm.send_heartbeat(self.state.current_term)
-
-
