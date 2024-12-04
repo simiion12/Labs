@@ -1,14 +1,14 @@
-from parser import CarScraper
-from web_utils import get_car_objects_from_data, save_json, save_xml, read_json
-from web_utils import change_to_mdl_currency, save_statistics
-from statistics import Statistics
+from Labs.Year3.PR.Lab1.parser import CarScraper
+from Labs.Year3.PR.Lab1.web_utils import get_car_objects_from_data, save_json, save_xml, read_json
+from Labs.Year3.PR.Lab1.web_utils import change_to_mdl_currency, save_statistics
+from Labs.Year3.PR.Lab1.statistics import Statistics
 
 
 def main():
     base_url = "https://sargutrans.md/page/{}/"
     final_cars = []
 
-    for i in range(1, 22):
+    for i in range(1, 2):
         url = base_url.format(i)
         final_cars.extend(CarScraper(url).parse_page())
 

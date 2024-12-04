@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from web_utils import get_webpage
+from Labs.Year3.PR.Lab1.web_utils import get_webpage
 import re
 
 

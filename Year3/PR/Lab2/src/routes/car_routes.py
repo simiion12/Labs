@@ -4,6 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from fastapi import Depends, HTTPException, status
 from typing import List
+from fastapi import File, UploadFile
+import json
 
 from src.models.schemas import CarCreate, CarUpdate
 from src.models.models import car
@@ -172,25 +174,80 @@ async def get_cars(
             detail=f"An error occurred: {str(e)}"
         )
 
-#
-# @router.get("/count")
-# async def get_cars_count(db: AsyncSession = Depends(get_async_session)):
-#     """
-#     Get total number of cars in the database
-#
-#     Returns:
-#     Total count of cars
-#     """
-#     try:
-#         # Count total number of cars
-#         query = select(car.c.id).count()
-#         result = await db.execute(query)
-#         count = result.scalar_one()
-#
-#         return {"total_cars": count}
-#     except Exception as e:
-#         raise HTTPException(
-#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-#             detail=f"An error occurred: {str(e)}"
-#         )
-#
+@router.post("/files/", status_code=201)
+async def upload_cars_file(
+    file: UploadFile = File(...),
+    db: AsyncSession = Depends(get_async_session)
+):
+    try:
+        # Read file content
+        content = await file.read()
+        cars_data = json.loads(content)
+
+        # Store results
+        created_cars = []
+        errors = []
+
+        # Process each car in the file
+        for car_data in cars_data:
+            try:
+                # Create CarCreate model from data
+                car_create = CarCreate(
+                    capacit_motor=car_data['capacit_motor'],
+                    tip_combustibil=car_data['tip_combustibil'],
+                    anul_fabricatiei=car_data['anul_fabricatiei'],
+                    cutia_de_viteze=car_data['cutia_de_viteze'],
+                    marca=car_data['marca'],
+                    modelul=car_data['modelul'],
+                    tip_tractiune=car_data['tip_tractiune'],
+                    distanta_parcursa=car_data['distanta_parcursa'],
+                    tip_caroserie=car_data['tip_caroserie'],
+                    price=car_data['price'],
+                    link=car_data['link']
+                )
+
+                # Create the insert statement
+                new_car = car.insert().values(
+                    capacit_motor=car_create.capacit_motor,
+                    tip_combustibil=car_create.tip_combustibil,
+                    anul_fabricatiei=car_create.anul_fabricatiei,
+                    cutia_de_viteze=car_create.cutia_de_viteze,
+                    marca=car_create.marca,
+                    modelul=car_create.modelul,
+                    tip_tractiune=car_create.tip_tractiune,
+                    distanta_parcursa=car_create.distanta_parcursa,
+                    tip_caroserie=car_create.tip_caroserie,
+                    price=car_create.price,
+                    link=car_create.link
+                )
+
+                # Execute the insert
+                await db.execute(new_car)
+                created_cars.append(car_create)
+
+            except Exception as e:
+                errors.append(f"Error processing car: {str(e)}")
+
+        # Commit all successful insertions
+        if created_cars:
+            await db.commit()
+
+        # Return summary
+        return {
+            "message": f"Processed {len(created_cars)} cars",
+            "successful": len(created_cars),
+            "errors": errors if errors else None
+        }
+
+    except json.JSONDecodeError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid JSON file"
+        )
+    except Exception as e:
+        await db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"An error occurred: {str(e)}"
+        )
+
