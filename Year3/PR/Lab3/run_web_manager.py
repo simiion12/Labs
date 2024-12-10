@@ -1,10 +1,20 @@
-from fastapi import FastAPI
 import uvicorn
 from manager_node import ManagerNode
+import threading
 
-app = FastAPI()
-manager = ManagerNode()
+def main():
+    manager = ManagerNode()
+    app = manager.get_app()
 
+    # Start manager threads in background
+    manager_thread = threading.Thread(
+        target=manager.start,
+        daemon=True
+    )
+    manager_thread.start()
+
+    # Run FastAPI app
+    uvicorn.run(app, host="0.0.0.0", port=7999)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    main()

@@ -1,4 +1,4 @@
-from typing import Dict
+import requests
 import socket
 import json
 import logging
@@ -15,6 +15,7 @@ class Communication:
         self.udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.nodes = socket_config['nodes']
         self.server_id = socket_config['server_id']
+
 
     def _broadcast(self, message_type: str, term: int, voter_for: str = None):
         message = {
@@ -46,3 +47,21 @@ class Communication:
 
     def send_vote_response(self, term: int, voted_for: str):
         self._broadcast(RaftMessage.VOTE_RESPONSE.value, term, voted_for)
+
+    @staticmethod
+    def notify_manager_of_leadership(server_id: str, http_port: int):
+        """Notify manager of new leadership"""
+        # try:
+        response = requests.post(
+            "http://0.0.0.0:7999/update_leader",
+            params={
+                "server_id": server_id,
+                "port": http_port
+            }
+        )
+        if response.status_code == 200:
+            print(f"Successfully updated manager with new leader: {server_id}")
+        else:
+            print(f"Failed to update manager. Status: {response.status_code}")
+        # except Exception as e:
+        #     print(f"Error notifying manager: {e}")

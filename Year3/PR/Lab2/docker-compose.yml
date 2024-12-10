@@ -1,10 +1,10 @@
 version: '3'
 
 services:
-  fastapi:
+  fastapi-node1:
     build: .
-    container_name: PR-Lab2
-    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+    container_name: PR-Lab2-Node1
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8001 --reload
     volumes:
       - ./src:/app/src
     working_dir: /app
@@ -14,11 +14,67 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - NODE_ID=node1
+      - UDP_PORT=5001
+      - HTTP_PORT=8001
     depends_on:
       - postgres
     ports:
-      - "8000:8000"
       - "8001:8001"
+      - "5001:5001/udp"
+    networks:
+      - lab_network
+      - raft_network
+
+  fastapi-node2:
+    build: .
+    container_name: PR-Lab2-Node2
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8002 --reload
+    volumes:
+      - ./src:/app/src
+    working_dir: /app
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - NODE_ID=node2
+      - UDP_PORT=5002
+      - HTTP_PORT=8002
+    depends_on:
+      - postgres
+    ports:
+      - "8002:8002"
+      - "5002:5002/udp"
+    networks:
+      - lab_network
+      - raft_network
+
+  fastapi-node3:
+    build: .
+    container_name: PR-Lab2-Node3
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8003 --reload
+    volumes:
+      - ./src:/app/src
+    working_dir: /app
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - NODE_ID=node3
+      - UDP_PORT=5003
+      - HTTP_PORT=8003
+    depends_on:
+      - postgres
+    ports:
+      - "8003:8003"
+      - "5003:5003/udp"
+    networks:
+      - lab_network
+      - raft_network
 
   postgres:
     image: postgres:latest
@@ -29,3 +85,11 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - lab_network
+
+networks:
+    lab_network:
+        driver: bridge
+    raft_network:
+      driver: bridge

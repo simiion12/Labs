@@ -18,7 +18,7 @@ ALIVE = 6
 
 class Election:
     def __init__(self, server_id: str, udp_port: int, nodes: Dict[str, Dict[str, int]]):
-        self.state = RaftState(server_id)
+        self.state = RaftState(server_id, nodes)
         self.udp_port = udp_port
         self.nodes = nodes
 

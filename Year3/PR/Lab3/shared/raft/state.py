@@ -3,6 +3,8 @@ from typing import Optional, Set
 import random
 import time
 
+from Labs.Year3.PR.Lab3.shared.raft.communication import Communication
+
 class ServerState(Enum):
     FOLLOWER = "FOLLOWER"
     CANDIDATE = "CANDIDATE"
@@ -19,7 +21,7 @@ class RaftMessage(Enum):
 class RaftState:
     HEARTBEAT_INTERVAL = 1
 
-    def __init__(self, server_id: str):
+    def __init__(self, server_id: str, nodes: dict):
         # Server identity
         self.server_id = server_id
         self.leader_id: Optional[str] = None
@@ -35,6 +37,9 @@ class RaftState:
         self.last_self_heartbeat = 0
         self.last_heartbeat = 0
         self.election_timeout = self._random_timeout()
+
+        self.nodes = nodes
+        self.http_port = self.nodes[self.server_id]["http_port"]
 
     def _random_timeout(self) -> float:
         """Generate random election timeout between 1.5 to 3 seconds"""
@@ -67,9 +72,13 @@ class RaftState:
         if self.state == ServerState.CANDIDATE:
             self.state = ServerState.LEADER
             self.current_leader = self.server_id
+            # Notify manager of new leadership
+            print("Notifying manager of new leadership")
+            Communication.notify_manager_of_leadership(self.server_id, self.http_port)
             # Clear votes after becoming leader
             self.votes_received.clear()
             self.last_heartbeat = time.time()
+
 
     def handle_heartbeat(self, term: int, leader_id: str) -> bool:
         """Handle received heartbeat"""

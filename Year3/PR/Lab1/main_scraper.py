@@ -8,7 +8,7 @@ def main():
     base_url = "https://sargutrans.md/page/{}/"
     final_cars = []
 
-    for i in range(1, 2):
+    for i in range(2, 4):
         url = base_url.format(i)
         final_cars.extend(CarScraper(url).parse_page())
 

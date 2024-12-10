@@ -5,6 +5,7 @@ import logging
 import pika
 import requests
 from ftplib import FTP
+from fastapi import FastAPI
 
 logging.basicConfig(
     level=logging.INFO,
@@ -14,15 +15,21 @@ logging.basicConfig(
 
 class ManagerNode:
     def __init__(self):
+        # Create FastAPI app
+        self.app = FastAPI()
+        self.setup_routes()
 
         # RabbitMQ connection settings
-        self.rabbitmq_host = 'localhost'
+        self.rabbitmq_host = 'iepure_MQ'
         self.rabbitmq_queue = 'car_data'
-        # Initialize RabbitMQ connection
-        self.init_rabbitmq()
+        self.connection = None
+        self.channel = None
+
+        if not self.init_rabbitmq():
+            logging.warning("Initial RabbitMQ connection failed, will retry in background...")
 
         # FTP connection settings
-        self.ftp_host = 'localhost'
+        self.ftp_host = 'ftp_server'
         self.ftp_user = 'ftpuser'
         self.ftp_pass = 'ftppass'
         self.ftp_check_interval = 30
@@ -31,17 +38,56 @@ class ManagerNode:
         self.message_queue = []
         self.message_queue_lock = threading.Lock()
 
+        # Leader election
+        self.current_leader = None
+        self.leader_port = None
 
-    def init_rabbitmq(self):
-        """Initialize RabbitMQ connection and channel"""
-        self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host=self.rabbitmq_host)
-        )
-        self.channel = self.connection.channel()
-        self.channel.queue_declare(queue=self.rabbitmq_queue)
+    def setup_routes(self):
+        @self.app.post("/update_leader")
+        async def update_leader(server_id: str, port: int, term: int):
+            self.current_leader = server_id
+            self.leader_port = port
+            print(f"Leader updated to {server_id} on port {port} with term {term}")
+            return {"status": "success"}
+
+    def _get_current_target(self) -> str:
+        """Get current target server URL"""
+        if self.current_leader and self.leader_port:
+            return f"http://PR-Lab2-{self.current_leader.capitalize()}:{self.leader_port}"
+        return f"http://PR-Lab2-Node1:8001"
+
+    def init_rabbitmq(self, max_retries=5, initial_delay=1):
+        """Initialize RabbitMQ connection with retry mechanism"""
+        retry_count = 0
+        while retry_count < max_retries:
+            try:
+                logging.info(f"Attempting to connect to RabbitMQ (attempt {retry_count + 1}/{max_retries})")
+                self.connection = pika.BlockingConnection(
+                    pika.ConnectionParameters(
+                        host=self.rabbitmq_host,
+                        connection_attempts=3,
+                        retry_delay=2
+                    )
+                )
+                self.channel = self.connection.channel()
+                self.channel.queue_declare(queue=self.rabbitmq_queue)
+                logging.info("Successfully connected to RabbitMQ")
+                return True
+            except pika.exceptions.AMQPConnectionError as e:
+                retry_count += 1
+                if retry_count == max_retries:
+                    logging.error(f"Failed to connect to RabbitMQ after {max_retries} attempts: {e}")
+                    return False
+                wait_time = initial_delay * (2 ** retry_count)  # exponential backoff
+                logging.info(f"Connection failed, retrying in {wait_time} seconds...")
+                time.sleep(wait_time)
 
     def start(self):
         """Start all worker threads"""
+        # First, try to establish RabbitMQ connection
+        if not self.init_rabbitmq():
+            print("Failed to establish initial RabbitMQ connection. Starting without it...")
+
         threads = [
             threading.Thread(target=self._run_listening_to_rabit_mq, daemon=True),
             threading.Thread(target=self._run_listening_to_ftp, daemon=True),
@@ -105,23 +151,23 @@ class ManagerNode:
             print(f"Error handling FTP file {filename}: {e}")
 
     def _run_listening_to_rabit_mq(self):
-        """Start the manager node"""
-        print("Starting Manager Node...")
-        print(f"Listening for car data on queue: {self.rabbitmq_queue}")
+        """RabbitMQ consumer thread"""
+        while True:
+            try:
+                if not self.connection or self.connection.is_closed:
+                    self.init_rabbitmq()
 
-        # Set up RabbitMQ consumer
-        self.channel.basic_consume(
-            queue=self.rabbitmq_queue,
-            on_message_callback=self._handle_rabbitmq_message,
-            auto_ack=True
-        )
-
-        try:
-            print("Manager Node is running. Press CTRL+C to exit.")
-            self.channel.start_consuming()
-        except KeyboardInterrupt:
-            print("Shutting down Manager Node...")
-            self.connection.close()
+                if self.channel:
+                    print("Starting to consume messages...")
+                    self.channel.basic_consume(
+                        queue=self.rabbitmq_queue,
+                        on_message_callback=self._handle_rabbitmq_message,
+                        auto_ack=True
+                    )
+                    self.channel.start_consuming()
+            except Exception as e:
+                print(f"RabbitMQ connection error: {e}")
+                time.sleep(5)
 
     def _handle_rabbitmq_message(self, ch, method, properties, body):
         """Handle incoming RabbitMQ message"""
@@ -160,9 +206,9 @@ class ManagerNode:
         # except requests.RequestException as e:
         #     print(f"Error forwarding file: {e}")
 
-    def _get_current_target(self):
-        """Get current target server (leader or default)"""
-        return "http://localhost:8000"
+    def get_app(self):
+        """Return the FastAPI app instance"""
+        return self.app
 
     @staticmethod
     def transform_car_data(car_data):
@@ -191,9 +237,3 @@ class ManagerNode:
                     transformed_data[new_key] = car_data[old_key]
 
         return transformed_data
-
-
-
-if __name__ == "__main__":
-    manager = ManagerNode()
-    manager.start()
