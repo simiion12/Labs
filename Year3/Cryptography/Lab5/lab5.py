@@ -35,7 +35,7 @@ class PKIManager:
 
         print("Generating CA self-signed certificate...")
         subject = issuer = Name([
-            NameAttribute(NameOID.COUNTRY_NAME, "Moldova"),
+            NameAttribute(NameOID.COUNTRY_NAME, "Md"),
             NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "Chisinau"),
             NameAttribute(NameOID.LOCALITY_NAME, "Chisinau"),
             NameAttribute(NameOID.ORGANIZATION_NAME, "FAF"),
@@ -82,7 +82,7 @@ class PKIManager:
 
         print(f"Generating certificate for user: {username}...")
         subject = Name([
-            NameAttribute(NameOID.COUNTRY_NAME, "US"),
+            NameAttribute(NameOID.COUNTRY_NAME, "Md"),
             NameAttribute(NameOID.ORGANIZATION_NAME, username),
             NameAttribute(NameOID.COMMON_NAME, f"{username} Certificate"),
         ])
