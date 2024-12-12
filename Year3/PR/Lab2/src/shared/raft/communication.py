@@ -34,16 +34,24 @@ class Communication:
             message["voter_for"] = voter_for
 
         for node_id, node in self.nodes.items():
-            if node_id not in ["manager", self.server_id]:
+            if node_id != self.server_id:
                 try:
                     # Use container name in raft_network
-                    target_host = f'PR-Lab2-Node{node_id[-1]}'  # e.g., PR-Lab2-Node1
+                    target_host = f'PR-Lab2-Node{node_id[-1]}'
                     encoded_message = json.dumps(message).encode()
-                    # logging.info(f"Node {self.server_id} sending {message_type} to {target_host}:{node['udp_port']}")
-                    self.udp_socket.sendto(
-                        encoded_message,
-                        (target_host, node['udp_port'])
-                    )
+
+                    try:
+                        self.udp_socket.sendto(
+                            encoded_message,
+                            (target_host, node['udp_port'])
+                        )
+                    except socket.timeout:
+                        logging.warning(f"Timeout sending message to {node_id}")
+                        continue
+                    except socket.gaierror:
+                        logging.error(f"DNS resolution failed for {target_host}")
+                        continue
+
                 except Exception as e:
                     logging.error(f"Broadcast error to {node_id} ({target_host}): {str(e)}")
 
@@ -57,6 +65,7 @@ class Communication:
         #     Communication.notify_manager_of_leadership(self.server_id, self.nodes[self.server_id]["http_port"])
 
     def send_request_vote(self, term: int):
+        self.logger.info(f"Broadcasting vote request for term {term}")
         self._broadcast(RaftMessage.REQUEST_VOTE.value, term)
 
     def send_vote_response(self, term: int, voted_for: str):

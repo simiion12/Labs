@@ -43,7 +43,7 @@ class RaftState:
 
     def _random_timeout(self) -> float:
         """Generate random election timeout between 1.5 to 3 seconds"""
-        return random.uniform(3, 6.0)
+        return random.uniform(15.0, 40.0)
 
     def reset_election_timeout(self):
         """Reset the election timeout with a new random value"""
@@ -82,39 +82,70 @@ class RaftState:
 
     def handle_heartbeat(self, term: int, leader_id: str) -> bool:
         """Handle received heartbeat"""
-        if term < self.current_term:
-            return False
-
-        self.last_heartbeat = time.time()
-
-        if (term >= self.current_term and
-                (self.state == ServerState.LEADER or self.state == ServerState.CANDIDATE)):
-            print(f"Stepping down: received heartbeat from {leader_id} in term {term}")
+        if term > self.current_term:
+            # Become follower as higher term has been detected, update term
             self.become_follower(term)
-
-        self.leader_id = leader_id
-        return True
+            # Update last_heartbeat
+            self.last_heartbeat = time.time()
+            # Update leader
+            self.leader_id = leader_id
+        elif term < self.current_term:
+            # Ignore outdated heartbeats from previous terms
+            return False
+        else:
+            # Handling heartbeats for current_term ONLY
+            if self.state == ServerState.LEADER or self.state == ServerState.CANDIDATE:
+                print(f"Stepping down: received heartbeat from {leader_id} in term {term}")
+                self.become_follower(term)
+            # Update last_heartbeat
+            self.last_heartbeat = time.time()
+            # Update leader
+            self.leader_id = leader_id
 
     def handle_vote_request(self, term: int, candidate_id: str) -> bool:
         """Handle vote request from candidate"""
+        # If we've already voted in this term, don't vote again
         if term < self.current_term:
             return False
-        if term > self.current_term or (self.voted_for is None or self.voted_for == candidate_id):
+
+        # If new term is higher, we should become follower and consider the vote
+        if term > self.current_term:
             self.become_follower(term)
+            # Then consider voting
+            if self.voted_for is None:  # Haven't voted in this new term yet
+                self.voted_for = candidate_id
+                self.last_heartbeat = time.time()  # Reset election timer
+                print(f"Voting for {candidate_id} in term {term}")
+                return True
+
+        # Only vote if we haven't voted this term OR we already voted for this candidate
+        if self.voted_for is None or self.voted_for == candidate_id:
             self.voted_for = candidate_id
+            self.last_heartbeat = time.time()  # Reset election timer when granting vote
             return True
 
         return False
 
     def handle_vote_response(self, term: int, voter_id: str, active_nodes) -> bool:
         """Handle vote response from other nodes"""
-        if term < self.current_term:
-            return False
         print("handle_vote_response", term, voter_id, active_nodes)
-        if term >= self.current_term:
-            self.votes_received.add(voter_id)
-            if len(self.votes_received) > active_nodes // 2:
-                self.become_leader()
-                return True
+
+        if term > self.current_term:
+            # Become follower as higher term has been detected
+            self.become_follower(term)
+            # Clear votes
+            self.votes_received.clear()
+            return False
+        elif term < self.current_term:
+            # Ignore outdated votes from previous terms
+            return False
+        else:
+            # Counting votes for current term and candidates ONLY
+            if self.state == ServerState.CANDIDATE:
+                self.votes_received.add(voter_id)
+                print(active_nodes, "in handle vote responses ", self.voted_for, self.current_term)
+                if len(self.votes_received) > active_nodes // 2:
+                    self.become_leader()
+                    return True
 
         return False
