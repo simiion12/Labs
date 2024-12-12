@@ -5,7 +5,11 @@ import logging
 import pika
 import requests
 from ftplib import FTP
-from fastapi import FastAPI
+from fastapi import FastAPI, Body, HTTPException
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -49,6 +53,49 @@ class ManagerNode:
             self.leader_port = port
             print(f"Leader updated to {server_id} on port {port} with term {term}")
             return {"status": "success"}
+
+        @self.app.post("/send_email")
+        async def send_email(
+            sender_email: str = Body(...),
+            sender_name: str = Body(...),
+            recipient_email: str = Body(...),
+            recipient_name: str = Body(...),
+            subject: str = Body(...),
+            body: str = Body(...),
+            smtp_password: str = Body(...),
+        ):
+            try:
+                self._send_email(
+                    sender_email, sender_name, recipient_email, recipient_name, subject, body, smtp_password
+                )
+                return {"status": "Email sent successfully"}
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
+
+    def _send_email(
+        self,
+        sender_email: str,
+        sender_name: str,
+        recipient_email: str,
+        recipient_name: str,
+        subject: str,
+        body: str,
+        smtp_password: str,
+    ):
+        # Create MIME email
+        msg = MIMEMultipart()
+        msg['From'] = f"{sender_name} <{sender_email}>"
+        msg['To'] = f"{recipient_name} <{recipient_email}>"
+        msg['Subject'] = subject
+
+        # Attach the email body
+        msg.attach(MIMEText(body, 'plain'))
+
+        # Connect to SMTP server
+        with smtplib.SMTP('smtp.gmail.com', 587) as server:
+            server.starttls()
+            server.login(sender_email, smtp_password)
+            server.send_message(msg)
 
     def _get_current_target(self) -> str:
         """Get current target server URL"""
