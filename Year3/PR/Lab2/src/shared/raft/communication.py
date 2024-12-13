@@ -62,8 +62,7 @@ class Communication:
         self._broadcast(RaftMessage.HEARTBEAT.value, term)
         logging.info(f"Node {self.server_id} sent heartbeat")
         # if self.server_id == self.nodes.get('current_leader'):
-        #     Communication.notify_manager_of_leadership(self.server_id, self.nodes[self.server_id]["http_port"])
-
+        Communication.notify_manager_of_leadership(self.server_id, self.nodes[self.server_id]["http_port"], term)
     def send_request_vote(self, term: int):
         self.logger.info(f"Broadcasting vote request for term {term}")
         self._broadcast(RaftMessage.REQUEST_VOTE.value, term)
