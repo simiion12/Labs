@@ -1,7 +1,7 @@
 import ssl
 import socket
 from urllib.parse import urlparse
-from car import Car
+from Labs.Year3.PR.Lab1.car import Car
 
 
 def get_webpage(url, max_redirects=5):

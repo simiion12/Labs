@@ -22,12 +22,12 @@ class ServerManager:
     def run_servers_threaded(http_app: FastAPI, ws_app: FastAPI):
         http_thread = threading.Thread(
             target=ServerManager.run_server,
-            args=(http_app, "0.0.0.0", 8000)
+            args=(http_app, "0.0.0.0", 8081)
         )
 
         ws_thread = threading.Thread(
             target=ServerManager.run_server,
-            args=(ws_app, "0.0.0.0", 8001)
+            args=(ws_app, "0.0.0.0", 8071)
         )
 
         http_thread.start()

@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+        container_name: iepure_MQ
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        healthcheck:
+            test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        networks:
+            - lab_network
+
+    ftp_server:
+        image: stilliard/pure-ftpd:hardened
+        container_name: ftp_server
+        ports:
+            - "21:21"
+            - "30000-30009:30000-30009"
+        environment:
+            - PUBLICHOST=localhost
+            - FTP_USER_NAME=ftpuser
+            - FTP_USER_PASS=ftppass
+            - FTP_USER_HOME=/home/ftpusers
+        volumes:
+            - ./ftp_data:/home/ftpusers
+        networks:
+            - lab_network
+
+    web_manager:
+        build: .
+        container_name: PR-Web-Manager
+        ports:
+            - "7999:7999"
+        depends_on:
+            rabbitmq:
+                condition: service_healthy
+            ftp_server:
+                condition: service_started
+        networks:
+            - lab_network
+
+networks:
+    lab_network:
+        driver: bridge
+
